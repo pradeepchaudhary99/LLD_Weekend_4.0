@@ -1,0 +1,16 @@
+# build artifacts
+dist/
+bin/
+obj/
+node_modules/
+*.class
+*.out
+*.o
+*.exe
+a.out
+
+# IDE
+.idea/
+.vscode/
+*.iml
+.DS_Store
