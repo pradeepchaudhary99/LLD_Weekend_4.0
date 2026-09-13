@@ -8,7 +8,10 @@
 // Composition, Association, Aggregation, package-level state, constants, receivers.
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"os"
+)
 
 // ------------------------------------------------------------
 // Abstraction: an interface plays the role of an abstract type
@@ -200,6 +203,20 @@ func oopDemo() {
 }
 
 func main() {
+	if len(os.Args) > 1 {
+		switch os.Args[1] {
+		case "Main":
+			oopDemo()
+		case "SolidDemo":
+			solidDemo()
+		case "Relationship":
+			relationshipDemo()
+		default:
+			fmt.Fprintln(os.Stderr, "Unknown lesson")
+			os.Exit(1)
+		}
+		return
+	}
 	oopDemo()
 
 	fmt.Println("\n--- SOLID ---")

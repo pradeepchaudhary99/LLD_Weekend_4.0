@@ -65,6 +65,10 @@ class PremiumCustomerDiscount extends DiscountStrategy {
   }
 }
 
+class DiwaliDiscount extends DiscountStrategy {
+  calculate() { return 30; }
+}
+
 class DiscountCalculator {
   calculate(strategy) {
     return strategy.calculate();
@@ -206,6 +210,7 @@ function main() {
   // OCP
   const calc = new DiscountCalculator();
   console.log(calc.calculate(new PremiumCustomerDiscount()));
+  console.log(calc.calculate(new DiwaliDiscount()));
 
   // LSP
   const bird = new Sparrow();

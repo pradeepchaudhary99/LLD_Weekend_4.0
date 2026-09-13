@@ -303,6 +303,7 @@ public class Main {
 
 
 
+/* Classroom notes on method names and overloading:
 AreaSquare(int side)
 
 AreaRectangle(int side)
@@ -318,4 +319,4 @@ areaRectange()
 
 
 area(5,6)
-
+*/

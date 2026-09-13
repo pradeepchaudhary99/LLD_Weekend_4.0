@@ -1,15 +1,7 @@
-package Java.DesignPatterns;
-
-
-
-package Java.DesignPatterns;
-
-import org.w3c.dom.Notation;
-
 class Application{
 
     void sendNotification(NotificationFactory factory, String type){
-        Notification notification = factory.getNotification(); 
+        Notification notification = factory.getNotification();
         notification.send("message");
     }
 }
@@ -24,8 +16,7 @@ class SMSNotification implements  Notification{
 
     @Override
     public void send(String message) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'send'");
+        System.out.println("SMS: " + message);
     }
 
 }
@@ -34,8 +25,7 @@ class SLACKNotification implements  Notification{
 
     @Override
     public void send(String message) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'send'");
+        System.out.println("Slack: " + message);
     }
 
 }
@@ -44,8 +34,7 @@ class WhatsappNotification implements  Notification{
 
     @Override
     public void send(String message) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'send'");
+        System.out.println("WhatsApp: " + message);
     }
 
 }
@@ -53,13 +42,13 @@ class WhatsappNotification implements  Notification{
 class PushNotification implements Notification{
     @Override
     public void send(String message) {
-
+        System.out.println("Push: " + message);
     }
 }
 
 
 
-// product Factory 
+// product Factory
 
 interface NotificationFactory{
     Notification getNotification();
@@ -90,12 +79,15 @@ class PushNotificationFactory implements NotificationFactory{
 
 
 
-//Factory Design Pattern / Method 
+//Factory Design Pattern / Method
 
 
 
 public class FactoryMethodDesignPattern {
     public static void main(String[] args) {
-        
+        Application app = new Application();
+        app.sendNotification(new SMSNotificationFactory(), "SMS");
+        app.sendNotification(new WhatsappNotificationFactory(), "Whatsapp");
+        app.sendNotification(new PushNotificationFactory(), "Push");
     }
 }

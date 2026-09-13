@@ -1,73 +1,36 @@
-package Java.DesignPatterns;
-
-
-
-class Application{
-
-    void sendNotification(){
-        Notification notification = NotificationFactory.getNotification("SMS"); 
-        notification.send("message");
+import java.util.HashMap;
+import java.util.Map;
+interface Notification { void send(String message); }
+class SMSNotification implements Notification {
+    public void send(String message) { System.out.println("SMS: " + message); }
+}
+class SLACKNotification implements Notification {
+    public void send(String message) { System.out.println("Slack: " + message); }
+}
+class WhatsappNotification implements Notification {
+    public void send(String message) { System.out.println("WhatsApp: " + message); }
+}
+class NotificationFactory {
+    // Cached stateless products; this teaching example is single threaded.
+    private static final Map<String, Notification> cache = new HashMap<>();
+    static Notification getNotification(String type) {
+        if (type == null) throw new IllegalArgumentException("Unknown notification type");
+        return cache.computeIfAbsent(type.toUpperCase(java.util.Locale.ROOT), key -> {
+            switch (key) {
+                case "SMS": return new SMSNotification();
+                case "SLACK": return new SLACKNotification();
+                case "WHATSAPP": return new WhatsappNotification();
+                default: throw new IllegalArgumentException("Unknown notification type");
+            }
+        });
     }
 }
-
-
-interface Notification{
-    void send(String message);
-}
-
-class SMSNotification implements  Notification{
-
-    @Override
-    public void send(String message) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'send'");
-    }
-
-}
-
-class SLACKNotification implements  Notification{
-
-    @Override
-    public void send(String message) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'send'");
-    }
-
-}
-class WhatsappNotification implements  Notification{
-
-    @Override
-    public void send(String message) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'send'");
-    }
-
-}
-
-
-
-
-class NotificationFactory{
-
-    public static Notification getNotification(String type){
-
-        if(type.equals("SMS")){
-            return new SMSNotification();
-        }else if(type.equals("SLACK")){
-            return new SLACKNotification();
-        }else if(type.equals("Whatsapp")){
-            return new WhatsappNotification();
-        }
-    }
-}
-
-
-//Factory Design Pattern / Method 
-
-
-
-
-
 public class SimpleFactoryDesignPattern {
-    
+    public static void main(String[] args) {
+        for (String type : new String[]{"SMS", "SLACK", "Whatsapp"})
+            NotificationFactory.getNotification(type).send("Hello");
+        System.out.println("Same instance: " + (NotificationFactory.getNotification("SMS") == NotificationFactory.getNotification("sms")));
+        try { NotificationFactory.getNotification("EMAIL"); }
+        catch (IllegalArgumentException e) { System.out.println(e.getMessage()); }
+    }
 }

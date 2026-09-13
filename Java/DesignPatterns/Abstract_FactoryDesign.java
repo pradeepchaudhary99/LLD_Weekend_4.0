@@ -1,5 +1,3 @@
-
-
 //Products in UI
 
 interface IButton{
@@ -36,7 +34,7 @@ interface IScreen{
 
 
 
-//Windows 
+//Windows
 class WindowButton implements IButton{
     @Override
     public void renderButton() {
@@ -49,17 +47,17 @@ class WindowModal implements IModal{
     @Override
     public void renderModal() {
         System.out.println("Window modal rendered");
-    }  
+    }
 }
 
 class WindowScreen implements IScreen{
     @Override
     public void renderScreen() {
         System.out.println("Window screen rendered");
-    }    
+    }
 }
 
-//Mac 
+//Mac
 class MacButton implements IButton{
     @Override
     public void renderButton() {
@@ -72,19 +70,19 @@ class MacModal implements IModal{
     @Override
     public void renderModal() {
         System.out.println("Mac modal rendered");
-    }  
+    }
 }
 
 class MacScreen implements IScreen{
     @Override
     public void renderScreen() {
         System.out.println("Mac screen rendered");
-    }    
+    }
 }
 
 //Linux
 
-//Mac 
+//Mac
 class LinuxButton implements IButton{
     @Override
     public void renderButton() {
@@ -97,14 +95,14 @@ class LinuxModal implements IModal{
     @Override
     public void renderModal() {
         System.out.println("linux modal rendered");
-    }  
+    }
 }
 
 class LinuxScreen implements IScreen{
     @Override
     public void renderScreen() {
         System.out.println("linux screen rendered");
-    }    
+    }
 }
 
 
@@ -131,7 +129,7 @@ class LinuxFactory implements I_UI_Factory{
     public IScreen getScreen() {
         return new LinuxScreen();
     }
-    
+
 }
 
 class WindowUIFactory implements I_UI_Factory{

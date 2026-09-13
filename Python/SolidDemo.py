@@ -68,6 +68,11 @@ class PremiumCustomerDiscount(DiscountStrategy):
         return 20
 
 
+class DiwaliDiscount(DiscountStrategy):
+    def calculate(self) -> float:
+        return 30
+
+
 class DiscountCalculator:
     def calculate(self, strategy: DiscountStrategy) -> float:
         return strategy.calculate()
@@ -221,6 +226,7 @@ def main() -> None:
     # OCP
     calc = DiscountCalculator()
     print(calc.calculate(PremiumCustomerDiscount()))
+    print(calc.calculate(DiwaliDiscount()))
 
     # LSP
     bird: FlyingBird = Sparrow()

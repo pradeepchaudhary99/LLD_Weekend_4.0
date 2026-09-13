@@ -14,3 +14,7 @@ a.out
 .vscode/
 *.iml
 .DS_Store
+
+# Python caches
+__pycache__/
+*.pyc

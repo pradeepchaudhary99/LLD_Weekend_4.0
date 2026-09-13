@@ -1,36 +1,13 @@
-package Java.DesignPatterns;
-
-
-
-class ConfigurationManager{
-    private String path;
-    private String currentDirectory;
-    private String metadata;
-
-    private static ConfigurationManager instance;
-    private ConfigurationManager(){
-    //   path;
-    //   currentDirectory;
-    //   metadata;
+class ConfigurationManager {
+    private ConfigurationManager() {}
+    // Initialization-on-demand holder: lazy and thread safe.
+    private static class Holder {
+        private static final ConfigurationManager INSTANCE = new ConfigurationManager();
     }
-
-    public ConfigurationManager getInstance(){
-
-        if(instance == null){
-
-            
-            //locking
-                if(instance == null){
-                    instance = new ConfigurationManager();
-                }
-        }
-        return instance;
-
-    }
+    public static ConfigurationManager getInstance() { return Holder.INSTANCE; }
 }
-
-
-
 public class Singleton {
-    
+    public static void main(String[] args) {
+        System.out.println("Same instance: " + (ConfigurationManager.getInstance() == ConfigurationManager.getInstance()));
+    }
 }

@@ -87,6 +87,7 @@ namespace LLDWeekend4.Relationships
     // ------------------------------------------------------------
     public static class RelationshipDemo
     {
+        public static void Main() => Run();
         public static void Run()
         {
             var students = new List<Student> { new("Neha"), new("Rahul") };

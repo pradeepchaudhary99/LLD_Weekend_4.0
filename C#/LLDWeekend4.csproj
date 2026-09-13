@@ -8,4 +8,7 @@
     <StartupObject>LLDWeekend4.Oop.Program</StartupObject>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="DesignPatterns/**/*.cs" />
+  </ItemGroup>
 </Project>

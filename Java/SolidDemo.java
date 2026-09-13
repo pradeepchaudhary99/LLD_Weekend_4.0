@@ -1,5 +1,3 @@
-package Java;
-
 // SOLID Principles Demonstration in ONE FILE
 
 // =======================
@@ -10,7 +8,7 @@ package Java;
 class UserBad {
     String name;
 
-    public void saveToDB() {
+   public void saveToDB() {
         System.out.println("Saving user to DB");
     }
 
@@ -64,8 +62,15 @@ class PremiumCustomerDiscount implements DiscountStrategy {
     public double calculate() { return 20; }
 }
 
+class DiwaliDiscount implements DiscountStrategy{
+    public double calculate(){
+        return 30;
+    }
+}
+
+
 //Dicoupling...
-// 
+//
 
 
 class DiscountCalculator {
@@ -92,15 +97,10 @@ class PenguinBad extends BirdBad {
     }
 }
 
-// interface FlyingBird extends Bird {
-//     void fly();
-// }
 
-// class Sparrow implements FlyingBird {
-//     public void fly() {
-//         System.out.println("Flying");
-//     }
-// }
+interface FlyingBird { void fly(); }
+
+class Sparrow implements FlyingBird { public void fly() { System.out.println("Flying"); } }
 
 
 
@@ -123,6 +123,8 @@ class RobotBad implements WorkerBad {
         throw new UnsupportedOperationException("Robot doesn't eat");
     }
 }
+
+
 
 // GOOD: Split interfaces
 interface Workable {
@@ -162,12 +164,26 @@ class MySQLDatabase {
 }
 
 class ApplicationBad {
-    MySQLDatabase db;
-    
+    MySQLDatabase db = new MySQLDatabase();
+    PostgreSQL db1;
+
     public void start() {
         db.connect();
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // GOOD: Depend on abstraction
 interface Database {
@@ -187,7 +203,7 @@ class PostgreSQL implements Database {
 }
 
 class NoSQL implements Database{
-
+    public void connect() { System.out.println("Connecting to NoSQL"); }
 }
 
 class Application {
@@ -221,6 +237,7 @@ public class SolidDemo {
         // OCP
         DiscountCalculator calc = new DiscountCalculator();
         System.out.println(calc.calculate(new PremiumCustomerDiscount()));
+        System.out.println(calc.calculate(new DiwaliDiscount()));
 
         // LSP
         FlyingBird bird = new Sparrow();

@@ -10,8 +10,8 @@ import "fmt"
 // BAD: one type doing multiple things.
 type UserBad struct{ Name string }
 
-func (UserBad) SaveToDB()   { fmt.Println("Saving user to DB") }
-func (UserBad) SendEmail()  { fmt.Println("Sending email") }
+func (UserBad) SaveToDB()  { fmt.Println("Saving user to DB") }
+func (UserBad) SendEmail() { fmt.Println("Sending email") }
 
 // GOOD: separate responsibilities.
 type User struct{ Name string }
@@ -54,6 +54,10 @@ func (NewCustomerDiscount) Calculate() float64 { return 10 }
 type PremiumCustomerDiscount struct{}
 
 func (PremiumCustomerDiscount) Calculate() float64 { return 20 }
+
+type DiwaliDiscount struct{}
+
+func (DiwaliDiscount) Calculate() float64 { return 30 }
 
 type DiscountCalculator struct{}
 
@@ -147,6 +151,7 @@ func solidDemo() {
 
 	// OCP
 	fmt.Println(DiscountCalculator{}.Calculate(PremiumCustomerDiscount{}))
+	fmt.Println(DiscountCalculator{}.Calculate(DiwaliDiscount{}))
 
 	// LSP
 	var bird FlyingBird = Sparrow{}

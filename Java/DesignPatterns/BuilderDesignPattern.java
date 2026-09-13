@@ -1,28 +1,26 @@
-package Java.DesignPatterns;
-
 class Student{
     String name; // mandatory param '
     //
 
-    //optional 
+    //optional
     int age;
     String address;
     float wallet;
 
     private Student(StudentBuilder builder){
-        this.name = name;
-        this.age = age;
-        this.address = address;
-        this.wallet = wallet;
+        this.name = builder.name;
+        this.age = builder.age;
+        this.address = builder.address;
+        this.wallet = builder.wallet;
     }
 
-    class StudentBuilder{
+    static class StudentBuilder{
         String name; // mandatory param '
-        //optional 
+        //optional
         int age;
         String address;
         float wallet;
-        
+
         public StudentBuilder(String name){
             this.name = name;
         }
@@ -56,6 +54,7 @@ class Student{
 
 public class BuilderDesignPattern {
     public static void main(String[] args) {
-        Student student = new Student.StudentBuilder("pradeep").setAge(123).setaddress("dasd").setWallet(12321).build();
+        Student student = new Student.StudentBuilder("pradeep").setAge(23).setaddress("Delhi").setWallet(100).build();
+        System.out.println(student.name + " " + student.age + " " + student.address + " " + student.wallet);
     }
 }

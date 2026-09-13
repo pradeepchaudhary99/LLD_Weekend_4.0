@@ -64,6 +64,11 @@ public:
     double calculate() override { return 20; }
 };
 
+class DiwaliDiscount : public DiscountStrategy {
+public:
+    double calculate() override { return 30; }
+};
+
 class DiscountCalculator {
 public:
     double calculate(DiscountStrategy& strategy) { return strategy.calculate(); }
@@ -202,6 +207,8 @@ int main() {
     DiscountCalculator calc;
     PremiumCustomerDiscount premium;
     std::cout << calc.calculate(premium) << '\n';
+    DiwaliDiscount diwali;
+    std::cout << calc.calculate(diwali) << '\n';
 
     // LSP
     std::unique_ptr<FlyingBird> bird = std::make_unique<Sparrow>();

@@ -64,6 +64,11 @@ namespace LLDWeekend4.Solid
         public double Calculate() => 20;
     }
 
+    public class DiwaliDiscount : IDiscountStrategy
+    {
+        public double Calculate() => 30;
+    }
+
     public class DiscountCalculator
     {
         public double Calculate(IDiscountStrategy strategy) => strategy.Calculate();
@@ -193,6 +198,7 @@ namespace LLDWeekend4.Solid
     // =======================
     public static class SolidDemo
     {
+        public static void Main() => Run();
         public static void Run()
         {
             // SRP
@@ -203,6 +209,7 @@ namespace LLDWeekend4.Solid
             // OCP
             var calc = new DiscountCalculator();
             Console.WriteLine(calc.Calculate(new PremiumCustomerDiscount()));
+            Console.WriteLine(calc.Calculate(new DiwaliDiscount()));
 
             // LSP
             IFlyingBird bird = new Sparrow();
