@@ -8,21 +8,34 @@ import "fmt"
 // =======================
 
 // BAD: one type doing multiple things.
-type UserBad struct{ Name string }
+type UserBad struct {
+	Name string
+}
 
-func (UserBad) SaveToDB()  { fmt.Println("Saving user to DB") }
-func (UserBad) SendEmail() { fmt.Println("Sending email") }
+func (UserBad) SaveToDB() {
+	fmt.Println("Saving user to DB")
+}
+
+func (UserBad) SendEmail() {
+	fmt.Println("Sending email")
+}
 
 // GOOD: separate responsibilities.
-type User struct{ Name string }
+type User struct {
+	Name string
+}
 
 type UserRepository struct{}
 
-func (UserRepository) Save(User) { fmt.Println("Saving user to DB") }
+func (UserRepository) Save(User) {
+	fmt.Println("Saving user to DB")
+}
 
 type EmailService struct{}
 
-func (EmailService) SendEmail(User) { fmt.Println("Sending email") }
+func (EmailService) SendEmail(User) {
+	fmt.Println("Sending email")
+}
 
 // =======================
 // 2. OPEN CLOSED PRINCIPLE (OCP)
@@ -49,19 +62,27 @@ type DiscountStrategy interface {
 
 type NewCustomerDiscount struct{}
 
-func (NewCustomerDiscount) Calculate() float64 { return 10 }
+func (NewCustomerDiscount) Calculate() float64 {
+	return 10
+}
 
 type PremiumCustomerDiscount struct{}
 
-func (PremiumCustomerDiscount) Calculate() float64 { return 20 }
+func (PremiumCustomerDiscount) Calculate() float64 {
+	return 20
+}
 
 type DiwaliDiscount struct{}
 
-func (DiwaliDiscount) Calculate() float64 { return 30 }
+func (DiwaliDiscount) Calculate() float64 {
+	return 30
+}
 
 type DiscountCalculator struct{}
 
-func (DiscountCalculator) Calculate(s DiscountStrategy) float64 { return s.Calculate() }
+func (DiscountCalculator) Calculate(s DiscountStrategy) float64 {
+	return s.Calculate()
+}
 
 // =======================
 // 3. LISKOV SUBSTITUTION PRINCIPLE (LSP)
@@ -70,14 +91,22 @@ func (DiscountCalculator) Calculate(s DiscountStrategy) float64 { return s.Calcu
 // BAD: a "bird" whose fly() breaks the contract.
 type BirdBad struct{}
 
-func (BirdBad) Fly() { fmt.Println("Flying") }
+func (BirdBad) Fly() {
+	fmt.Println("Flying")
+}
 
-type PenguinBad struct{ BirdBad }
+type PenguinBad struct {
+	BirdBad
+}
 
-func (PenguinBad) Fly() { panic("Can't fly") }
+func (PenguinBad) Fly() {
+	panic("Can't fly")
+}
 
 // GOOD: only flying birds expose Fly().
-type Bird interface{ Eat() }
+type Bird interface {
+	Eat()
+}
 
 type FlyingBird interface {
 	Bird
@@ -86,26 +115,42 @@ type FlyingBird interface {
 
 type Sparrow struct{}
 
-func (Sparrow) Eat() { fmt.Println("Sparrow eating") }
-func (Sparrow) Fly() { fmt.Println("Flying") }
+func (Sparrow) Eat() {
+	fmt.Println("Sparrow eating")
+}
+
+func (Sparrow) Fly() {
+	fmt.Println("Flying")
+}
 
 // =======================
 // 4. INTERFACE SEGREGATION PRINCIPLE (ISP)
 // =======================
 
 // GOOD: small, focused interfaces.
-type Workable interface{ Work() }
+type Workable interface {
+	Work()
+}
 
-type Eatable interface{ Eat() }
+type Eatable interface {
+	Eat()
+}
 
 type Human struct{}
 
-func (Human) Work() { fmt.Println("Working") }
-func (Human) Eat()  { fmt.Println("Eating") }
+func (Human) Work() {
+	fmt.Println("Working")
+}
+
+func (Human) Eat() {
+	fmt.Println("Eating")
+}
 
 type Robot struct{}
 
-func (Robot) Work() { fmt.Println("Working") }
+func (Robot) Work() {
+	fmt.Println("Working")
+}
 
 // =======================
 // 5. DEPENDENCY INVERSION PRINCIPLE (DIP)
@@ -114,34 +159,56 @@ func (Robot) Work() { fmt.Println("Working") }
 // BAD: high-level code depends on a concrete type.
 type MySQLDatabase struct{}
 
-func (MySQLDatabase) Connect() { fmt.Println("Connecting to MySQL") }
+func (MySQLDatabase) Connect() {
+	fmt.Println("Connecting to MySQL")
+}
 
-type ApplicationBad struct{ db MySQLDatabase }
+type ApplicationBad struct {
+	db MySQLDatabase
+}
 
-func (a ApplicationBad) Start() { a.db.Connect() }
+func (a ApplicationBad) Start() {
+	a.db.Connect()
+}
 
 // GOOD: depend on an abstraction.
-type Database interface{ Connect() }
+type Database interface {
+	Connect()
+}
 
 type MySQL struct{}
 
-func (MySQL) Connect() { fmt.Println("Connecting to MySQL") }
+func (MySQL) Connect() {
+	fmt.Println("Connecting to MySQL")
+}
 
 type PostgreSQL struct{}
 
-func (PostgreSQL) Connect() { fmt.Println("Connecting to PostgreSQL") }
+func (PostgreSQL) Connect() {
+	fmt.Println("Connecting to PostgreSQL")
+}
 
 type NoSQL struct{}
 
-func (NoSQL) Connect() { fmt.Println("Connecting to NoSQL") }
+func (NoSQL) Connect() {
+	fmt.Println("Connecting to NoSQL")
+}
 
-type Application struct{ db Database }
+type Application struct {
+	db Database
+}
 
-func NewApplication(db Database) *Application { return &Application{db: db} }
+func NewApplication(db Database) *Application {
+	return &Application{db: db}
+}
 
-func (a *Application) SetDB(db Database) { a.db = db }
+func (a *Application) SetDB(db Database) {
+	a.db = db
+}
 
-func (a *Application) Start() { a.db.Connect() }
+func (a *Application) Start() {
+	a.db.Connect()
+}
 
 func solidDemo() {
 	// SRP

@@ -6,32 +6,32 @@
 
 // BAD: one class doing multiple things
 class UserBad {
-  name = '';
+    name = "";
 
-  saveToDB(): void {
-    console.log('Saving user to DB');
-  }
+    saveToDB(): void {
+        console.log("Saving user to DB");
+    }
 
-  sendEmail(): void {
-    console.log('Sending email');
-  }
+    sendEmail(): void {
+        console.log("Sending email");
+    }
 }
 
 // GOOD: separate responsibilities
 class User {
-  name = '';
+    name = "";
 }
 
 class UserRepository {
-  save(_user: User): void {
-    console.log('Saving user to DB');
-  }
+    save(_user: User): void {
+        console.log("Saving user to DB");
+    }
 }
 
 class EmailService {
-  sendEmail(_user: User): void {
-    console.log('Sending email');
-  }
+    sendEmail(_user: User): void {
+        console.log("Sending email");
+    }
 }
 
 // =======================
@@ -40,39 +40,41 @@ class EmailService {
 
 // BAD: must edit for every new type
 class DiscountCalculatorBad {
-  calculate(type: string): number {
-    if (type === 'NEW') return 10;
-    if (type === 'PREMIUM') return 20;
-    if (type === 'DIWALI') return 30;
-    return 0;
-  }
+    calculate(type: string): number {
+        if (type === "NEW") return 10;
+        if (type === "PREMIUM") return 20;
+        if (type === "DIWALI") return 30;
+        return 0;
+    }
 }
 
 // GOOD: extend without modifying
 interface DiscountStrategy {
-  calculate(): number;
+    calculate(): number;
 }
 
 class NewCustomerDiscount implements DiscountStrategy {
-  calculate(): number {
-    return 10;
-  }
+    calculate(): number {
+        return 10;
+    }
 }
 
 class PremiumCustomerDiscount implements DiscountStrategy {
-  calculate(): number {
-    return 20;
-  }
+    calculate(): number {
+        return 20;
+    }
 }
 
 class DiwaliDiscount implements DiscountStrategy {
-  calculate(): number { return 30; }
+    calculate(): number {
+        return 30;
+    }
 }
 
 class DiscountCalculator {
-  calculate(strategy: DiscountStrategy): number {
-    return strategy.calculate();
-  }
+    calculate(strategy: DiscountStrategy): number {
+        return strategy.calculate();
+    }
 }
 
 // =======================
@@ -81,34 +83,34 @@ class DiscountCalculator {
 
 // BAD: violates substitution
 class BirdBad {
-  fly(): void {
-    console.log('Flying');
-  }
+    fly(): void {
+        console.log("Flying");
+    }
 }
 
 class PenguinBad extends BirdBad {
-  fly(): never {
-    throw new Error("Can't fly");
-  }
+    fly(): never {
+        throw new Error("Can't fly");
+    }
 }
 
 // GOOD: only flying birds expose fly()
 interface Bird {
-  eat(): void;
+    eat(): void;
 }
 
 interface FlyingBird extends Bird {
-  fly(): void;
+    fly(): void;
 }
 
 class Sparrow implements FlyingBird {
-  eat(): void {
-    console.log('Sparrow eating');
-  }
+    eat(): void {
+        console.log("Sparrow eating");
+    }
 
-  fly(): void {
-    console.log('Flying');
-  }
+    fly(): void {
+        console.log("Flying");
+    }
 }
 
 // =======================
@@ -117,43 +119,43 @@ class Sparrow implements FlyingBird {
 
 // BAD: fat interface
 interface WorkerBad {
-  work(): void;
-  eat(): void;
+    work(): void;
+    eat(): void;
 }
 
 class RobotBad implements WorkerBad {
-  work(): void {
-    console.log('Working');
-  }
+    work(): void {
+        console.log("Working");
+    }
 
-  eat(): never {
-    throw new Error("Robot doesn't eat");
-  }
+    eat(): never {
+        throw new Error("Robot doesn't eat");
+    }
 }
 
 // GOOD: split interfaces
 interface Workable {
-  work(): void;
+    work(): void;
 }
 
 interface Eatable {
-  eat(): void;
+    eat(): void;
 }
 
 class Human implements Workable, Eatable {
-  work(): void {
-    console.log('Working');
-  }
+    work(): void {
+        console.log("Working");
+    }
 
-  eat(): void {
-    console.log('Eating');
-  }
+    eat(): void {
+        console.log("Eating");
+    }
 }
 
 class Robot implements Workable {
-  work(): void {
-    console.log('Working');
-  }
+    work(): void {
+        console.log("Working");
+    }
 }
 
 // =======================
@@ -162,80 +164,80 @@ class Robot implements Workable {
 
 // BAD: high-level depends on low-level
 class MySQLDatabase {
-  connect(): void {
-    console.log('Connecting to MySQL');
-  }
+    connect(): void {
+        console.log("Connecting to MySQL");
+    }
 }
 
 class ApplicationBad {
-  private db = new MySQLDatabase();
+    private db = new MySQLDatabase();
 
-  start(): void {
-    this.db.connect();
-  }
+    start(): void {
+        this.db.connect();
+    }
 }
 
 // GOOD: depend on an abstraction
 interface Database {
-  connect(): void;
+    connect(): void;
 }
 
 class MySQL implements Database {
-  connect(): void {
-    console.log('Connecting to MySQL');
-  }
+    connect(): void {
+        console.log("Connecting to MySQL");
+    }
 }
 
 class PostgreSQL implements Database {
-  connect(): void {
-    console.log('Connecting to PostgreSQL');
-  }
+    connect(): void {
+        console.log("Connecting to PostgreSQL");
+    }
 }
 
 class NoSQL implements Database {
-  connect(): void {
-    console.log('Connecting to NoSQL');
-  }
+    connect(): void {
+        console.log("Connecting to NoSQL");
+    }
 }
 
 class Application {
-  constructor(private db: Database) {}
+    constructor(private db: Database) {}
 
-  setDB(db: Database): void {
-    this.db = db;
-  }
+    setDB(db: Database): void {
+        this.db = db;
+    }
 
-  start(): void {
-    this.db.connect();
-  }
+    start(): void {
+        this.db.connect();
+    }
 }
 
 // =======================
 // MAIN (TESTING)
 // =======================
 function main(): void {
-  // SRP
-  const user = new User();
-  new UserRepository().save(user);
-  new EmailService().sendEmail(user);
+    // SRP
+    const user = new User();
+    new UserRepository().save(user);
+    new EmailService().sendEmail(user);
 
-  // OCP
-  const calc = new DiscountCalculator();
-  console.log(calc.calculate(new PremiumCustomerDiscount()));
-  console.log(calc.calculate(new DiwaliDiscount()));
+    // OCP
+    const calc = new DiscountCalculator();
+    console.log(calc.calculate(new PremiumCustomerDiscount()));
+    console.log(calc.calculate(new DiwaliDiscount()));
 
-  // LSP
-  const bird: FlyingBird = new Sparrow();
-  bird.fly();
+    // LSP
+    const bird: FlyingBird = new Sparrow();
+    bird.fly();
 
-  // ISP
-  const robot: Workable = new Robot();
-  robot.work();
+    // ISP
+    const robot: Workable = new Robot();
+    robot.work();
 
-  // DIP
-  const app = new Application(new MySQL());
-  app.setDB(new NoSQL());
-  app.start();
+    // DIP
+    const app = new Application(new MySQL());
+    app.setDB(new NoSQL());
+    app.start();
 }
 
 main();

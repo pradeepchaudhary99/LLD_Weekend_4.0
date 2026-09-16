@@ -1,2 +1,4 @@
 #include "patterns.hpp"
-int main() { lld::BuilderDesignPattern(); }
+int main() {
+    lld::BuilderDesignPattern();
+}

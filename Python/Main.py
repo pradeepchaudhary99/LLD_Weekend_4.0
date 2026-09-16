@@ -30,8 +30,7 @@ class Employee(ABC):
         self._salary = salary
 
     @abstractmethod
-    def work(self) -> None:
-        ...
+    def work(self) -> None: ...
 
     def display(self) -> None:
         print(f"{self._name} earns {self._salary}")
@@ -42,8 +41,7 @@ class Employee(ABC):
 # ------------------------------------------------------------
 class Payable(ABC):
     @abstractmethod
-    def pay_salary(self) -> None:
-        ...
+    def pay_salary(self) -> None: ...
 
 
 # ------------------------------------------------------------

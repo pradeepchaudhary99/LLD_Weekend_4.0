@@ -2,4 +2,6 @@ package main
 
 import "lldweekend4/go/DesignPatterns/patterns"
 
-func main() { patterns.BuilderDesignPattern() }
+func main() {
+	patterns.BuilderDesignPattern()
+}

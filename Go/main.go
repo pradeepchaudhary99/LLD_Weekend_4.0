@@ -68,7 +68,9 @@ func NewBankAccount(balance float64) *BankAccount {
 	return &BankAccount{balance: balance}
 }
 
-func (a *BankAccount) Deposit(amount float64) { a.balance += amount }
+func (a *BankAccount) Deposit(amount float64) {
+	a.balance += amount
+}
 
 func (a *BankAccount) Withdraw(amount float64) {
 	if amount <= a.balance {
@@ -76,14 +78,18 @@ func (a *BankAccount) Withdraw(amount float64) {
 	}
 }
 
-func (a *BankAccount) Balance() float64 { return a.balance }
+func (a *BankAccount) Balance() float64 {
+	return a.balance
+}
 
 // ------------------------------------------------------------
 // Composition (strong Has-A)
 // ------------------------------------------------------------
 type Engine struct{}
 
-func (Engine) Start() { fmt.Println("Engine Started") }
+func (Engine) Start() {
+	fmt.Println("Engine Started")
+}
 
 type Car struct {
 	engine Engine // owned by value
@@ -147,7 +153,9 @@ type Company struct {
 	CompanyID int
 }
 
-func PrintCompany() { fmt.Println(companyName) }
+func PrintCompany() {
+	fmt.Println(companyName)
+}
 
 // ------------------------------------------------------------
 // Person
@@ -156,7 +164,9 @@ type Person struct {
 	name string
 }
 
-func (p Person) Print() { fmt.Println(p.name) }
+func (p Person) Print() {
+	fmt.Println(p.name)
+}
 
 func oopDemo() {
 	// Struct & Value

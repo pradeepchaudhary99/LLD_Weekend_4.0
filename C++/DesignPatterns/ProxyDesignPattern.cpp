@@ -1,2 +1,4 @@
 #include "patterns.hpp"
-int main() { lld::ProxyDesignPattern(); }
+int main() {
+    lld::ProxyDesignPattern();
+}

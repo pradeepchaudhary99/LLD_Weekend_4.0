@@ -1,2 +1,4 @@
 #include "patterns.hpp"
-int main() { lld::StrategyDesign(); }
+int main() {
+    lld::StrategyDesign();
+}

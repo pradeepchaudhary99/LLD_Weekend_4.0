@@ -1,2 +1,4 @@
 #include "patterns.hpp"
-int main() { lld::DecoratorDesignPattern(); }
+int main() {
+    lld::DecoratorDesignPattern();
+}

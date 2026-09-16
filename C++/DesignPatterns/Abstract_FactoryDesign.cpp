@@ -1,2 +1,4 @@
 #include "patterns.hpp"
-int main() { lld::Abstract_FactoryDesign(); }
+int main() {
+    lld::Abstract_FactoryDesign();
+}

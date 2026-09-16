@@ -1,87 +1,75 @@
-class Application{
+class Application {
 
-    void sendNotification(NotificationFactory factory, String type){
+    void sendNotification(NotificationFactory factory, String type) {
         Notification notification = factory.getNotification();
         notification.send("message");
     }
 }
 
-
-//product
-interface Notification{
+// product
+interface Notification {
     void send(String message);
 }
 
-class SMSNotification implements  Notification{
+class SMSNotification implements Notification {
 
     @Override
     public void send(String message) {
         System.out.println("SMS: " + message);
     }
-
 }
 
-class SLACKNotification implements  Notification{
+class SLACKNotification implements Notification {
 
     @Override
     public void send(String message) {
         System.out.println("Slack: " + message);
     }
-
 }
 
-class WhatsappNotification implements  Notification{
+class WhatsappNotification implements Notification {
 
     @Override
     public void send(String message) {
         System.out.println("WhatsApp: " + message);
     }
-
 }
 
-class PushNotification implements Notification{
+class PushNotification implements Notification {
     @Override
     public void send(String message) {
         System.out.println("Push: " + message);
     }
 }
 
-
-
 // product Factory
 
-interface NotificationFactory{
+interface NotificationFactory {
     Notification getNotification();
 }
 
-class SMSNotificationFactory implements NotificationFactory{
+class SMSNotificationFactory implements NotificationFactory {
     @Override
     public Notification getNotification() {
         return new SMSNotification();
     }
 }
 
-class WhatsappNotificationFactory implements  NotificationFactory{
+class WhatsappNotificationFactory implements NotificationFactory {
     @Override
     public Notification getNotification() {
         return new WhatsappNotification();
     }
 }
 
-class PushNotificationFactory implements NotificationFactory{
+class PushNotificationFactory implements NotificationFactory {
     @Override
     public Notification getNotification() {
         return new PushNotification();
     }
 }
 
-
-
-
-
-//Factory Design Pattern / Method
-
-
+// Factory Design Pattern / Method
 
 public class FactoryMethodDesignPattern {
     public static void main(String[] args) {

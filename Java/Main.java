@@ -54,7 +54,7 @@ interface Payable {
 class Developer extends Employee implements Payable {
 
     public Developer(String name, double salary) {
-        super(name, salary);   // super keyword
+        super(name, salary); // super keyword
     }
 
     @Override
@@ -73,7 +73,7 @@ class Developer extends Employee implements Payable {
 //------------------------------------------------------------
 class BankAccount {
 
-    private double balance;    // hidden data
+    private double balance; // hidden data
 
     public BankAccount(double balance) {
         this.balance = balance;
@@ -84,7 +84,7 @@ class BankAccount {
     }
 
     public void withdraw(double amount) {
-        if(amount <= balance)
+        if (amount <= balance)
             balance -= amount;
     }
 
@@ -210,7 +210,7 @@ class Person {
     String name;
 
     Person(String name) {
-        this.name = name;      // this keyword
+        this.name = name; // this keyword
     }
 
     void print() {
@@ -249,7 +249,7 @@ public class Main {
         emp.display();
         emp.work();
 
-        Payable payable = (Payable) emp;
+        Payable payable = (Payable)emp;
         payable.paySalary();
 
         //----------------------------------------------------
@@ -296,12 +296,6 @@ public class Main {
         System.out.println("Company ID = " + company.companyId);
     }
 }
-
-
-
-
-
-
 
 /* Classroom notes on method names and overloading:
 AreaSquare(int side)

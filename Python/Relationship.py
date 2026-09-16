@@ -49,8 +49,7 @@ class LLDCourse:
 # ------------------------------------------------------------
 class IFileSystemNode(ABC):
     @abstractmethod
-    def name(self) -> str:
-        ...
+    def name(self) -> str: ...
 
 
 class File(IFileSystemNode):

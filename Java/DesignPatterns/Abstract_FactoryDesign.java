@@ -1,48 +1,28 @@
-//Products in UI
+// Products in UI
 
-interface IButton{
+interface IButton {
     void renderButton();
 }
 
-interface IModal{
+interface IModal {
     void renderModal();
 }
 
-interface IScreen{
+interface IScreen {
     void renderScreen();
 }
 
-//wINDOW MAC, LINUX
+// wINDOW MAC, LINUX
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//Windows
-class WindowButton implements IButton{
+// Windows
+class WindowButton implements IButton {
     @Override
     public void renderButton() {
         System.out.println("Window button rendered");
     }
 }
 
-class WindowModal implements IModal{
+class WindowModal implements IModal {
 
     @Override
     public void renderModal() {
@@ -50,22 +30,22 @@ class WindowModal implements IModal{
     }
 }
 
-class WindowScreen implements IScreen{
+class WindowScreen implements IScreen {
     @Override
     public void renderScreen() {
         System.out.println("Window screen rendered");
     }
 }
 
-//Mac
-class MacButton implements IButton{
+// Mac
+class MacButton implements IButton {
     @Override
     public void renderButton() {
         System.out.println("Mac button rendered");
     }
 }
 
-class MacModal implements IModal{
+class MacModal implements IModal {
 
     @Override
     public void renderModal() {
@@ -73,24 +53,24 @@ class MacModal implements IModal{
     }
 }
 
-class MacScreen implements IScreen{
+class MacScreen implements IScreen {
     @Override
     public void renderScreen() {
         System.out.println("Mac screen rendered");
     }
 }
 
-//Linux
+// Linux
 
-//Mac
-class LinuxButton implements IButton{
+// Mac
+class LinuxButton implements IButton {
     @Override
     public void renderButton() {
         System.out.println("linux button rendered");
     }
 }
 
-class LinuxModal implements IModal{
+class LinuxModal implements IModal {
 
     @Override
     public void renderModal() {
@@ -98,22 +78,20 @@ class LinuxModal implements IModal{
     }
 }
 
-class LinuxScreen implements IScreen{
+class LinuxScreen implements IScreen {
     @Override
     public void renderScreen() {
         System.out.println("linux screen rendered");
     }
 }
 
-
-
-interface I_UI_Factory{
+interface I_UI_Factory {
     IButton getButton();
     IModal getModal();
     IScreen getScreen();
 }
 
-class LinuxFactory implements I_UI_Factory{
+class LinuxFactory implements I_UI_Factory {
 
     @Override
     public IButton getButton() {
@@ -129,10 +107,9 @@ class LinuxFactory implements I_UI_Factory{
     public IScreen getScreen() {
         return new LinuxScreen();
     }
-
 }
 
-class WindowUIFactory implements I_UI_Factory{
+class WindowUIFactory implements I_UI_Factory {
     @Override
     public IButton getButton() {
         return new WindowButton();
@@ -149,8 +126,7 @@ class WindowUIFactory implements I_UI_Factory{
     }
 }
 
-
-class MacUIFactory implements I_UI_Factory{
+class MacUIFactory implements I_UI_Factory {
     @Override
     public IButton getButton() {
         return new MacButton();
@@ -167,53 +143,38 @@ class MacUIFactory implements I_UI_Factory{
     }
 }
 
-
-
-
-
-
-
-
-
-
-
-class UIRender{
+class UIRender {
     IButton button;
     IModal modal;
     IScreen screen;
 
-    public UIRender(I_UI_Factory factory){
+    public UIRender(I_UI_Factory factory) {
         this.button = factory.getButton();
         this.modal = factory.getModal();
         this.screen = factory.getScreen();
         renderUI();
     }
 
-    void renderUI(){
+    void renderUI() {
         button.renderButton();
         modal.renderModal();
         screen.renderScreen();
     }
 
-    void toggleUI(I_UI_Factory factory){
+    void toggleUI(I_UI_Factory factory) {
         this.button = factory.getButton();
         this.modal = factory.getModal();
         this.screen = factory.getScreen();
         renderUI();
     }
 
-
-    void toggle(I_UI_Factory factory){
+    void toggle(I_UI_Factory factory) {
         toggleUI(factory);
     }
 }
 
-
-
-
 public class Abstract_FactoryDesign {
     public static void main(String[] args) {
         UIRender myView = new UIRender(new LinuxFactory());
-
     }
 }

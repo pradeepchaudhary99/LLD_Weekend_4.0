@@ -3,7 +3,11 @@
   "private": true,
   "scripts": {
     "build:typescript": "tsc -p TypeScript/tsconfig.json",
-    "sync:javascript": "tsc --strict --target ES2022 --module commonjs --outDir JavaScript/DesignPatterns TypeScript/DesignPatterns/*.ts"
+    "sync:javascript": "tsc --strict --target ES2022 --module commonjs --outDir JavaScript/DesignPatterns TypeScript/DesignPatterns/*.ts && prettier --write \"JavaScript/DesignPatterns/*.js\"",
+    "format:web": "prettier --write \"JavaScript/**/*.js\" \"TypeScript/**/*.ts\""
   },
-  "devDependencies": {"typescript": "5.9.3"}
+  "devDependencies": {
+    "typescript": "5.9.3",
+    "prettier": "3.9.6"
+  }
 }

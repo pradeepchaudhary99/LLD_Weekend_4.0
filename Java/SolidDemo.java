@@ -8,7 +8,7 @@
 class UserBad {
     String name;
 
-   public void saveToDB() {
+    public void saveToDB() {
         System.out.println("Saving user to DB");
     }
 
@@ -34,7 +34,6 @@ class EmailService {
     }
 }
 
-
 // =======================
 // 2. OPEN CLOSED PRINCIPLE (OCP)
 // =======================
@@ -42,9 +41,12 @@ class EmailService {
 // BAD: Need to modify class for new types
 class DiscountCalculatorBad {
     public double calculate(String type) {
-        if (type.equals("NEW")) return 10;
-        else if (type.equals("PREMIUM")) return 20;
-        else if(type.equals("DIWALI")) return 30;
+        if (type.equals("NEW"))
+            return 10;
+        else if (type.equals("PREMIUM"))
+            return 20;
+        else if (type.equals("DIWALI"))
+            return 30;
         return 0;
     }
 }
@@ -55,30 +57,31 @@ interface DiscountStrategy {
 }
 
 class NewCustomerDiscount implements DiscountStrategy {
-    public double calculate() { return 10; }
+    public double calculate() {
+        return 10;
+    }
 }
 
 class PremiumCustomerDiscount implements DiscountStrategy {
-    public double calculate() { return 20; }
+    public double calculate() {
+        return 20;
+    }
 }
 
-class DiwaliDiscount implements DiscountStrategy{
-    public double calculate(){
+class DiwaliDiscount implements DiscountStrategy {
+    public double calculate() {
         return 30;
     }
 }
 
-
-//Dicoupling...
+// Dicoupling...
 //
-
 
 class DiscountCalculator {
     public double calculate(DiscountStrategy strategy) {
         return strategy.calculate();
     }
 }
-
 
 // =======================
 // 3. LISKOV SUBSTITUTION PRINCIPLE (LSP)
@@ -97,13 +100,15 @@ class PenguinBad extends BirdBad {
     }
 }
 
+interface FlyingBird {
+    void fly();
+}
 
-interface FlyingBird { void fly(); }
-
-class Sparrow implements FlyingBird { public void fly() { System.out.println("Flying"); } }
-
-
-
+class Sparrow implements FlyingBird {
+    public void fly() {
+        System.out.println("Flying");
+    }
+}
 
 // =======================
 // 4. INTERFACE SEGREGATION PRINCIPLE (ISP)
@@ -119,12 +124,11 @@ class RobotBad implements WorkerBad {
     public void work() {
         System.out.println("Working");
     }
+
     public void eat() {
         throw new UnsupportedOperationException("Robot doesn't eat");
     }
 }
-
-
 
 // GOOD: Split interfaces
 interface Workable {
@@ -151,7 +155,6 @@ class Robot implements Workable {
     }
 }
 
-
 // =======================
 // 5. DEPENDENCY INVERSION PRINCIPLE (DIP)
 // =======================
@@ -172,19 +175,6 @@ class ApplicationBad {
     }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 // GOOD: Depend on abstraction
 interface Database {
     void connect();
@@ -202,8 +192,10 @@ class PostgreSQL implements Database {
     }
 }
 
-class NoSQL implements Database{
-    public void connect() { System.out.println("Connecting to NoSQL"); }
+class NoSQL implements Database {
+    public void connect() {
+        System.out.println("Connecting to NoSQL");
+    }
 }
 
 class Application {
@@ -213,7 +205,7 @@ class Application {
         this.db = db;
     }
 
-    public void setDB(Database db){
+    public void setDB(Database db) {
         this.db = db;
     }
 
@@ -221,7 +213,6 @@ class Application {
         db.connect();
     }
 }
-
 
 // =======================
 // MAIN METHOD (TESTING)

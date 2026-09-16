@@ -2,10 +2,10 @@
 
 from abc import ABC, abstractmethod
 
-
 # =======================
 # 1. SINGLE RESPONSIBILITY PRINCIPLE (SRP)
 # =======================
+
 
 # BAD: One class doing multiple things
 class UserBad:
@@ -39,6 +39,7 @@ class EmailService:
 # 2. OPEN CLOSED PRINCIPLE (OCP)
 # =======================
 
+
 # BAD: Need to modify class for new types
 class DiscountCalculatorBad:
     def calculate(self, type_: str) -> float:
@@ -54,8 +55,7 @@ class DiscountCalculatorBad:
 # GOOD: Extend without modifying
 class DiscountStrategy(ABC):
     @abstractmethod
-    def calculate(self) -> float:
-        ...
+    def calculate(self) -> float: ...
 
 
 class NewCustomerDiscount(DiscountStrategy):
@@ -82,6 +82,7 @@ class DiscountCalculator:
 # 3. LISKOV SUBSTITUTION PRINCIPLE (LSP)
 # =======================
 
+
 # BAD: Violates substitution
 class BirdBad:
     def fly(self) -> None:
@@ -96,14 +97,12 @@ class PenguinBad(BirdBad):
 # GOOD: Only flying birds expose fly()
 class Bird(ABC):
     @abstractmethod
-    def eat(self) -> None:
-        ...
+    def eat(self) -> None: ...
 
 
 class FlyingBird(Bird):
     @abstractmethod
-    def fly(self) -> None:
-        ...
+    def fly(self) -> None: ...
 
 
 class Sparrow(FlyingBird):
@@ -118,15 +117,14 @@ class Sparrow(FlyingBird):
 # 4. INTERFACE SEGREGATION PRINCIPLE (ISP)
 # =======================
 
+
 # BAD: Fat interface
 class WorkerBad(ABC):
     @abstractmethod
-    def work(self) -> None:
-        ...
+    def work(self) -> None: ...
 
     @abstractmethod
-    def eat(self) -> None:
-        ...
+    def eat(self) -> None: ...
 
 
 class RobotBad(WorkerBad):
@@ -140,14 +138,12 @@ class RobotBad(WorkerBad):
 # GOOD: Split interfaces
 class Workable(ABC):
     @abstractmethod
-    def work(self) -> None:
-        ...
+    def work(self) -> None: ...
 
 
 class Eatable(ABC):
     @abstractmethod
-    def eat(self) -> None:
-        ...
+    def eat(self) -> None: ...
 
 
 class Human(Workable, Eatable):
@@ -167,6 +163,7 @@ class Robot(Workable):
 # 5. DEPENDENCY INVERSION PRINCIPLE (DIP)
 # =======================
 
+
 # BAD: High-level depends on low-level
 class MySQLDatabase:
     def connect(self) -> None:
@@ -184,8 +181,7 @@ class ApplicationBad:
 # GOOD: Depend on abstraction
 class Database(ABC):
     @abstractmethod
-    def connect(self) -> None:
-        ...
+    def connect(self) -> None: ...
 
 
 class MySQL(Database):

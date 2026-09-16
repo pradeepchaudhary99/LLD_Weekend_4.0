@@ -145,3 +145,25 @@ python3 scripts/test_behaviors.py
 The validator fails on a compile/runtime error or output mismatch. It does not
 silently skip missing compilers. Use `--report /tmp/lld-validation.json` to save
 structured results. See [VALIDATION.md](VALIDATION.md) for this change's results.
+
+## Keep the lessons readable
+
+Use multi-line class and method bodies, one statement per line, and blank lines
+between methods and classes. These are teaching examples: keep the execution
+steps visible rather than compressing them into one-liners.
+
+Formatting settings are checked in as `.clang-format`, `.prettierrc.json`, and
+`pyproject.toml`. After installing Black and clang-format in your development
+environment and running `npm ci`, format with:
+
+```sh
+black Python scripts
+# Apply clang-format to the Java, C++, and C# source files you edit:
+clang-format -i 'C#/DesignPatterns/Patterns.cs'
+npm run format:web
+go run scripts/format-go.go
+```
+
+The Go helper expands short function bodies and declarations before applying
+standard Go formatting. `npm run sync:javascript` also runs Prettier so generated
+JavaScript stays readable. Run the validation commands above after changes.

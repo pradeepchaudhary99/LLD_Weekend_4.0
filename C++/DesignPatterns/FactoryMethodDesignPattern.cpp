@@ -1,2 +1,4 @@
 #include "patterns.hpp"
-int main() { lld::FactoryMethodDesignPattern(); }
+int main() {
+    lld::FactoryMethodDesignPattern();
+}

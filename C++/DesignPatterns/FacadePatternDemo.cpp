@@ -1,2 +1,4 @@
 #include "patterns.hpp"
-int main() { lld::FacadePatternDemo(); }
+int main() {
+    lld::FacadePatternDemo();
+}

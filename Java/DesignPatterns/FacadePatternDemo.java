@@ -33,16 +33,6 @@ public class FacadePatternDemo {
         }
     }
 
-
-
-
-
-
-
-
-
-
-
     // Facade
     static class HomeTheaterFacade {
 

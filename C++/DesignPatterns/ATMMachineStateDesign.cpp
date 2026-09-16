@@ -1,2 +1,4 @@
 #include "patterns.hpp"
-int main() { lld::ATMMachineStateDesign(); }
+int main() {
+    lld::ATMMachineStateDesign();
+}

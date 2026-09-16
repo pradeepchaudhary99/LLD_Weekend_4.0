@@ -1,2 +1,4 @@
 #include "patterns.hpp"
-int main() { lld::ObserverDesignPattern(); }
+int main() {
+    lld::ObserverDesignPattern();
+}

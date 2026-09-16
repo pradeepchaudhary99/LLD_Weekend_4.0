@@ -22,3 +22,14 @@ and builder snapshot independence.
 The .NET 8 SDK used for validation was installed under a temporary directory,
 not included in the repository. Students need their own SDK and other chosen
 language toolchains as described in README.md.
+
+## Readability pass — 2026-09-16
+
+All seven language folders were reformatted with expanded class/method bodies,
+one statement per line, consistent indentation, and spacing between declarations.
+Formatter configuration is now checked in; JavaScript regeneration also formats
+its output. Existing lesson behavior is preserved.
+
+Revalidated after formatting: **98/98 pattern runs**, **21/21 core lesson runs**,
+and **12/12 behavior tests** passed. The full TypeScript build, Go vet, Black
+format check, and Prettier format check also passed.

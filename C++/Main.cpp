@@ -13,18 +13,18 @@
 // Abstraction
 // ------------------------------------------------------------
 class Employee {
-protected:
+  protected:
     std::string name_;
     double salary_;
 
-public:
-    Employee(std::string name, double salary)
-        : name_(std::move(name)), salary_(salary) {}
+  public:
+    Employee(std::string name, double salary) : name_(std::move(name)), salary_(salary) {
+    }
     virtual ~Employee() = default;
 
-    virtual void work() = 0;  // abstract method
+    virtual void work() = 0; // abstract method
 
-    void display() const {  // concrete method
+    void display() const { // concrete method
         std::cout << name_ << " earns " << salary_ << '\n';
     }
 };
@@ -41,9 +41,9 @@ struct Payable {
 // Inheritance + Method Overriding
 // ------------------------------------------------------------
 class Developer : public Employee, public Payable {
-public:
-    Developer(std::string name, double salary)
-        : Employee(std::move(name), salary) {}
+  public:
+    Developer(std::string name, double salary) : Employee(std::move(name), salary) {
+    }
 
     void work() override {
         std::cout << name_ << " is writing C++ code.\n";
@@ -58,32 +58,40 @@ public:
 // Encapsulation
 // ------------------------------------------------------------
 class BankAccount {
-    double balance_;  // hidden data
+    double balance_; // hidden data
 
-public:
-    explicit BankAccount(double balance) : balance_(balance) {}
-
-    void deposit(double amount) { balance_ += amount; }
-
-    void withdraw(double amount) {
-        if (amount <= balance_) balance_ -= amount;
+  public:
+    explicit BankAccount(double balance) : balance_(balance) {
     }
 
-    double getBalance() const { return balance_; }
+    void deposit(double amount) {
+        balance_ += amount;
+    }
+
+    void withdraw(double amount) {
+        if (amount <= balance_)
+            balance_ -= amount;
+    }
+
+    double getBalance() const {
+        return balance_;
+    }
 };
 
 // ------------------------------------------------------------
 // Composition (strong Has-A: Engine lifetime tied to Car)
 // ------------------------------------------------------------
 class Engine {
-public:
-    void start() const { std::cout << "Engine Started\n"; }
+  public:
+    void start() const {
+        std::cout << "Engine Started\n";
+    }
 };
 
 class Car {
-    Engine engine_;  // owned by value
+    Engine engine_; // owned by value
 
-public:
+  public:
     void startCar() const {
         engine_.start();
         std::cout << "Car Started\n";
@@ -94,18 +102,20 @@ public:
 // Aggregation (weak Has-A: Department outlives Professor)
 // ------------------------------------------------------------
 class Department {
-public:
+  public:
     std::string name;
-    explicit Department(std::string name) : name(std::move(name)) {}
+    explicit Department(std::string name) : name(std::move(name)) {
+    }
 };
 
 class Professor {
     std::string name_;
     std::shared_ptr<Department> department_;
 
-public:
+  public:
     Professor(std::string name, std::shared_ptr<Department> department)
-        : name_(std::move(name)), department_(std::move(department)) {}
+        : name_(std::move(name)), department_(std::move(department)) {
+    }
 
     void showDepartment() const {
         std::cout << name_ << " belongs to " << department_->name << '\n';
@@ -116,18 +126,20 @@ public:
 // Association
 // ------------------------------------------------------------
 class Course {
-public:
+  public:
     std::string title;
-    explicit Course(std::string title) : title(std::move(title)) {}
+    explicit Course(std::string title) : title(std::move(title)) {
+    }
 };
 
 class Student {
     std::string name_;
 
-public:
-    explicit Student(std::string name) : name_(std::move(name)) {}
+  public:
+    explicit Student(std::string name) : name_(std::move(name)) {
+    }
 
-    void attend(const Course& course) const {
+    void attend(const Course &course) const {
         std::cout << name_ << " attends " << course.title << '\n';
     }
 };
@@ -136,23 +148,32 @@ public:
 // Polymorphism (Method Overloading)
 // ------------------------------------------------------------
 class Calculator {
-public:
-    int add(int a, int b) { return a + b; }
-    double add(double a, double b) { return a + b; }
-    int add(int a, int b, int c) { return a + b + c; }
+  public:
+    int add(int a, int b) {
+        return a + b;
+    }
+    double add(double a, double b) {
+        return a + b;
+    }
+    int add(int a, int b, int c) {
+        return a + b + c;
+    }
 };
 
 // ------------------------------------------------------------
 // Static & const (final-like)
 // ------------------------------------------------------------
 class Company {
-public:
+  public:
     static std::string companyName;
     const int companyId;
 
-    explicit Company(int id) : companyId(id) {}
+    explicit Company(int id) : companyId(id) {
+    }
 
-    static void printCompany() { std::cout << companyName << '\n'; }
+    static void printCompany() {
+        std::cout << companyName << '\n';
+    }
 };
 
 std::string Company::companyName = "SYS Titans";
@@ -163,10 +184,14 @@ std::string Company::companyName = "SYS Titans";
 class Person {
     std::string name;
 
-public:
-    explicit Person(std::string name) { this->name = std::move(name); }
+  public:
+    explicit Person(std::string name) {
+        this->name = std::move(name);
+    }
 
-    void print() const { std::cout << this->name << '\n'; }
+    void print() const {
+        std::cout << this->name << '\n';
+    }
 };
 
 // ------------------------------------------------------------
@@ -188,7 +213,7 @@ int main() {
     emp->display();
     emp->work();
 
-    if (auto* payable = dynamic_cast<Payable*>(emp.get())) {
+    if (auto *payable = dynamic_cast<Payable *>(emp.get())) {
         payable->paySalary();
     }
 

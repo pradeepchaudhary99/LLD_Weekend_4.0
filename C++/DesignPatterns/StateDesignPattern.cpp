@@ -1,2 +1,4 @@
 #include "patterns.hpp"
-int main() { lld::StateDesignPattern(); }
+int main() {
+    lld::StateDesignPattern();
+}

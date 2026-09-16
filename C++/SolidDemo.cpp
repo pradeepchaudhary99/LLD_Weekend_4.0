@@ -11,26 +11,34 @@
 
 // BAD: One class doing multiple things
 class UserBad {
-public:
+  public:
     std::string name;
-    void saveToDB() { std::cout << "Saving user to DB\n"; }
-    void sendEmail() { std::cout << "Sending email\n"; }
+    void saveToDB() {
+        std::cout << "Saving user to DB\n";
+    }
+    void sendEmail() {
+        std::cout << "Sending email\n";
+    }
 };
 
 // GOOD: Separate responsibilities
 class User {
-public:
+  public:
     std::string name;
 };
 
 class UserRepository {
-public:
-    void save(const User&) { std::cout << "Saving user to DB\n"; }
+  public:
+    void save(const User &) {
+        std::cout << "Saving user to DB\n";
+    }
 };
 
 class EmailService {
-public:
-    void sendEmail(const User&) { std::cout << "Sending email\n"; }
+  public:
+    void sendEmail(const User &) {
+        std::cout << "Sending email\n";
+    }
 };
 
 // =======================
@@ -39,11 +47,14 @@ public:
 
 // BAD: Need to modify class for new types
 class DiscountCalculatorBad {
-public:
-    double calculate(const std::string& type) {
-        if (type == "NEW") return 10;
-        if (type == "PREMIUM") return 20;
-        if (type == "DIWALI") return 30;
+  public:
+    double calculate(const std::string &type) {
+        if (type == "NEW")
+            return 10;
+        if (type == "PREMIUM")
+            return 20;
+        if (type == "DIWALI")
+            return 30;
         return 0;
     }
 };
@@ -55,23 +66,31 @@ struct DiscountStrategy {
 };
 
 class NewCustomerDiscount : public DiscountStrategy {
-public:
-    double calculate() override { return 10; }
+  public:
+    double calculate() override {
+        return 10;
+    }
 };
 
 class PremiumCustomerDiscount : public DiscountStrategy {
-public:
-    double calculate() override { return 20; }
+  public:
+    double calculate() override {
+        return 20;
+    }
 };
 
 class DiwaliDiscount : public DiscountStrategy {
-public:
-    double calculate() override { return 30; }
+  public:
+    double calculate() override {
+        return 30;
+    }
 };
 
 class DiscountCalculator {
-public:
-    double calculate(DiscountStrategy& strategy) { return strategy.calculate(); }
+  public:
+    double calculate(DiscountStrategy &strategy) {
+        return strategy.calculate();
+    }
 };
 
 // =======================
@@ -80,14 +99,18 @@ public:
 
 // BAD: Violates substitution
 class BirdBad {
-public:
+  public:
     virtual ~BirdBad() = default;
-    virtual void fly() { std::cout << "Flying\n"; }
+    virtual void fly() {
+        std::cout << "Flying\n";
+    }
 };
 
 class PenguinBad : public BirdBad {
-public:
-    void fly() override { throw std::logic_error("Can't fly"); }
+  public:
+    void fly() override {
+        throw std::logic_error("Can't fly");
+    }
 };
 
 // GOOD: Only flying birds expose fly()
@@ -101,9 +124,13 @@ struct FlyingBird : Bird {
 };
 
 class Sparrow : public FlyingBird {
-public:
-    void eat() override { std::cout << "Sparrow eating\n"; }
-    void fly() override { std::cout << "Flying\n"; }
+  public:
+    void eat() override {
+        std::cout << "Sparrow eating\n";
+    }
+    void fly() override {
+        std::cout << "Flying\n";
+    }
 };
 
 // =======================
@@ -118,9 +145,13 @@ struct WorkerBad {
 };
 
 class RobotBad : public WorkerBad {
-public:
-    void work() override { std::cout << "Working\n"; }
-    void eat() override { throw std::logic_error("Robot doesn't eat"); }
+  public:
+    void work() override {
+        std::cout << "Working\n";
+    }
+    void eat() override {
+        throw std::logic_error("Robot doesn't eat");
+    }
 };
 
 // GOOD: Split interfaces
@@ -135,14 +166,20 @@ struct Eatable {
 };
 
 class Human : public Workable, public Eatable {
-public:
-    void work() override { std::cout << "Working\n"; }
-    void eat() override { std::cout << "Eating\n"; }
+  public:
+    void work() override {
+        std::cout << "Working\n";
+    }
+    void eat() override {
+        std::cout << "Eating\n";
+    }
 };
 
 class Robot : public Workable {
-public:
-    void work() override { std::cout << "Working\n"; }
+  public:
+    void work() override {
+        std::cout << "Working\n";
+    }
 };
 
 // =======================
@@ -151,15 +188,19 @@ public:
 
 // BAD: High-level depends on low-level
 class MySQLDatabase {
-public:
-    void connect() { std::cout << "Connecting to MySQL\n"; }
+  public:
+    void connect() {
+        std::cout << "Connecting to MySQL\n";
+    }
 };
 
 class ApplicationBad {
     MySQLDatabase db_;
 
-public:
-    void start() { db_.connect(); }
+  public:
+    void start() {
+        db_.connect();
+    }
 };
 
 // GOOD: Depend on abstraction
@@ -169,29 +210,40 @@ struct Database {
 };
 
 class MySQL : public Database {
-public:
-    void connect() override { std::cout << "Connecting to MySQL\n"; }
+  public:
+    void connect() override {
+        std::cout << "Connecting to MySQL\n";
+    }
 };
 
 class PostgreSQL : public Database {
-public:
-    void connect() override { std::cout << "Connecting to PostgreSQL\n"; }
+  public:
+    void connect() override {
+        std::cout << "Connecting to PostgreSQL\n";
+    }
 };
 
 class NoSQL : public Database {
-public:
-    void connect() override { std::cout << "Connecting to NoSQL\n"; }
+  public:
+    void connect() override {
+        std::cout << "Connecting to NoSQL\n";
+    }
 };
 
 class Application {
     std::shared_ptr<Database> db_;
 
-public:
-    explicit Application(std::shared_ptr<Database> db) : db_(std::move(db)) {}
+  public:
+    explicit Application(std::shared_ptr<Database> db) : db_(std::move(db)) {
+    }
 
-    void setDB(std::shared_ptr<Database> db) { db_ = std::move(db); }
+    void setDB(std::shared_ptr<Database> db) {
+        db_ = std::move(db);
+    }
 
-    void start() { db_->connect(); }
+    void start() {
+        db_->connect();
+    }
 };
 
 // =======================
