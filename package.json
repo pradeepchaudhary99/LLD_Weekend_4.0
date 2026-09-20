@@ -3,11 +3,12 @@
   "private": true,
   "scripts": {
     "build:typescript": "tsc -p TypeScript/tsconfig.json",
-    "sync:javascript": "tsc --strict --target ES2022 --module commonjs --outDir JavaScript/DesignPatterns TypeScript/DesignPatterns/*.ts && prettier --write \"JavaScript/DesignPatterns/*.js\"",
+    "sync:javascript": "tsc --strict --target ES2022 --module commonjs --rootDir TypeScript --outDir JavaScript TypeScript/DesignPatterns/*.ts TypeScript/ConcurrencyFundamentals.ts TypeScript/ProducerConsumerDemo.ts TypeScript/ThreadPool.ts TypeScript/ThreadPoolLLD.ts && node scripts/space-javascript.cjs JavaScript/concurrency_lessons.js JavaScript/DesignPatterns/ChainOfResponsibility.js && prettier --write \"JavaScript/DesignPatterns/*.js\" JavaScript/concurrency_lessons.js JavaScript/ConcurrencyFundamentals.js JavaScript/ProducerConsumerDemo.js JavaScript/ThreadPool.js JavaScript/ThreadPoolLLD.js",
     "format:web": "prettier --write \"JavaScript/**/*.js\" \"TypeScript/**/*.ts\""
   },
   "devDependencies": {
-    "typescript": "5.9.3",
-    "prettier": "3.9.6"
+    "@types/node": "22.20.4",
+    "prettier": "3.9.6",
+    "typescript": "5.9.3"
   }
 }

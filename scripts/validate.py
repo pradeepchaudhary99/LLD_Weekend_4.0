@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Compile/run each pattern in all languages and check independently specified output."""
+"""Compile/run each validated lesson in all languages and check independently specified output."""
 
 import argparse
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -28,9 +28,29 @@ EXPECTED = {
 }
 
 
+EXPECTED.update(
+    {
+        "ConcurrencyFundamentals": "Counter: 4000",
+        "ProducerConsumerDemo": "Consumed sum: 55\nInvalid capacity rejected",
+        "ThreadPool": "Completed sum: 55\nTask failures: 1\nSubmission after shutdown rejected\nInvalid pool size rejected",
+        "ThreadPoolLLD": "Executor sum: 55",
+        "ChainOfResponsibility": "0: Warning\n1: Warning\n2: Error\n3: Error\n4: Fatal\n5: Fatal\n6: Unhandled\nTruncated: Unhandled\nInvalid level rejected",
+    }
+)
+
+
 def check(language, lesson):
     result = subprocess.run(
-        [sys.executable, str(ROOT / "scripts/run.py"), language, "DesignPatterns/" + lesson],
+        [
+            sys.executable,
+            str(ROOT / "scripts/run.py"),
+            language,
+            (
+                lesson
+                if (ROOT / "Java" / (lesson + ".java")).exists()
+                else "DesignPatterns/" + lesson
+            ),
+        ],
         cwd=ROOT,
         text=True,
         capture_output=True,

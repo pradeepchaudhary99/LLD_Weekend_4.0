@@ -33,6 +33,11 @@ Replace `DesignPatterns/ATMMachineStateDesign` above with any path below.
 
 | Lesson | What to observe |
 | --- | --- |
+| `ConcurrencyFundamentals` | Protect shared increments, then wait for all workers |
+| `ProducerConsumerDemo` | Capacity-one backpressure with a finite consumer lifecycle |
+| `ThreadPool` | Custom worker queue, task failure isolation, drain and shutdown |
+| `ThreadPoolLLD` | Managed execution and collecting task results |
+| `DesignPatterns/ChainOfResponsibility` | Warning → Error → Fatal; thresholds, end of chain, invalid level |
 | `Main` | Core OOP, encapsulation, polymorphism, associations, ownership, static members |
 | `SolidDemo` | Five SOLID principles; add a Diwali discount without changing the good calculator |
 | `Relationship` | Teacher/student association, course aggregation, directory/file composition |
@@ -68,6 +73,10 @@ The first two requests use round-robin. Completing `r1` decreases A's active
 connection count; switching strategies sends `r3` to B, which has fewer active
 connections. Ties choose the first server.
 
+See [CONCURRENCY.md](CONCURRENCY.md) for the new lessons, exact commands, language
+differences, and lifecycle assumptions. Chain of Responsibility is self-contained
+in each language’s named entry-point file.
+
 ## Where to read the code
 
 Java lessons include their implementations and `main` in the named file.
@@ -102,7 +111,7 @@ lesson; it is excluded from the pattern validation suite.
 
 ## Teaching assumptions
 
-- These are small, single-threaded examples. Notification factory caches, the
+- The original design-pattern examples are single-threaded. Notification factory caches, the
   proxy, observers, and load balancer do not implement concurrent access control.
 - The proxy's backing database is an in-memory stand-in for Redis. All writes in
   the demo go through the proxy; external writes would require another invalidation
@@ -132,7 +141,7 @@ lesson; it is excluded from the pattern validation suite.
 Install all desired toolchains and run `npm ci` first.
 
 ```sh
-# 14 lessons × 7 languages, checked against explicit expected transcripts:
+# 19 lessons × 7 languages, checked against explicit expected transcripts:
 python3 scripts/validate.py
 
 # Or select only installed toolchains:

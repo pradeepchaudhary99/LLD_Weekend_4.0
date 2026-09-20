@@ -14,7 +14,7 @@ LANGUAGES = ("Java", "Python", "C++", "Go", "C#", "JavaScript", "TypeScript")
 def run(language, lesson):
     stem = Path(lesson)
     if stem.is_absolute() or ".." in stem.parts or len(stem.parts) not in (1, 2):
-        raise ValueError("Use Main, SolidDemo, Relationship, or DesignPatterns/<lesson>")
+        raise ValueError("Use a lesson name or DesignPatterns/<lesson>")
     env = dict(
         os.environ, DOTNET_CLI_TELEMETRY_OPTOUT="1", DOTNET_NOLOGO="1", PYTHONDONTWRITEBYTECODE="1"
     )
@@ -36,6 +36,7 @@ def run(language, lesson):
                 [
                     "c++",
                     "-std=c++17",
+                    "-pthread",
                     "-Wall",
                     "-Wextra",
                     "-pedantic",
@@ -66,7 +67,7 @@ def run(language, lesson):
             )
             call(["node", build / (stem.name + ".js")])
         elif language == "Go":
-            if len(stem.parts) == 2:
+            if len(stem.parts) == 2 or (ROOT / "Go" / lesson / "main.go").exists():
                 call(["go", "run", "./" + lesson], ROOT / "Go")
             else:
                 # Existing root Go lessons use one menu-style main.
@@ -80,6 +81,15 @@ def run(language, lesson):
                 project = ROOT / "C#" / "LLDWeekend4.csproj"
                 entrypoints = {
                     "Main": "Oop.Program",
+                    **{
+                        name: "Concurrency." + name
+                        for name in (
+                            "ConcurrencyFundamentals",
+                            "ProducerConsumerDemo",
+                            "ThreadPool",
+                            "ThreadPoolLLD",
+                        )
+                    },
                     "SolidDemo": "Solid.SolidDemo",
                     "Relationship": "Relationships.RelationshipDemo",
                 }
