@@ -33,6 +33,8 @@ Replace `DesignPatterns/ATMMachineStateDesign` above with any path below.
 
 | Lesson | What to observe |
 | --- | --- |
+| `ReadWriteLockDemo` | Shared readers, exclusive writes, safe cache updates and missing values |
+| `InterviewQuestions/ElevatorSystemDemo` | Deterministic multi-car scheduling, selection strategies and arrival displays |
 | `ConcurrencyFundamentals` | Protect shared increments, then wait for all workers |
 | `ProducerConsumerDemo` | Capacity-one backpressure with a finite consumer lifecycle |
 | `ThreadPool` | Custom worker queue, task failure isolation, drain and shutdown |
@@ -76,6 +78,9 @@ connections. Ties choose the first server.
 See [CONCURRENCY.md](CONCURRENCY.md) for the new lessons, exact commands, language
 differences, and lifecycle assumptions. Chain of Responsibility is self-contained
 in each language’s named entry-point file.
+
+See [LOCK_AND_ELEVATOR.md](LOCK_AND_ELEVATOR.md) for the September 26 lessons,
+run commands, concurrency differences, and elevator simulation limits.
 
 ## Where to read the code
 
@@ -141,7 +146,7 @@ lesson; it is excluded from the pattern validation suite.
 Install all desired toolchains and run `npm ci` first.
 
 ```sh
-# 19 lessons × 7 languages, checked against explicit expected transcripts:
+# 21 lessons × 7 languages, checked against explicit expected transcripts:
 python3 scripts/validate.py
 
 # Or select only installed toolchains:

@@ -64,3 +64,32 @@ shutdown rejection, invalid sizes, handler thresholds (0 through 6), a truncated
 chain, and negative-level rejection. Tests do not claim to prove correctness for
 all possible schedules. See CONCURRENCY.md for ownership and cancellation limits,
 Node's serializable job model, and the language-specific executor equivalents.
+
+## Read/write lock and elevator — 2026-09-26
+
+Completed the two new Java drafts and added Python, C++, Go, C#, JavaScript,
+and TypeScript translations with matching topic folders. Original Java drafts
+were copied to `/tmp/lld-originals-2026-09-26` before editing.
+
+- Expanded transcript suite: **147/147 passed** (21 lessons × seven languages),
+  including **14/14 new lesson runs**.
+- New Python lock/elevator checks: **4/4 passed**.
+- New Node lock/elevator checks: passed (overlapping async readers, queued writer
+  priority, release on rejection, routing, deduplication, strategy rotation,
+  and invalid inputs).
+- Java custom-lock checks: passed (overlapping readers, writer exclusion,
+  waiting-writer interruption and subsequent reader progress).
+- Go concurrent cache test: passed with **`-race`**; `go vet ./...` passed.
+- Full TypeScript project build: passed.
+- `git diff --check`: passed.
+
+The first suite run passed 126 checks and failed all 21 C# checks because the
+previous temporary .NET SDK had been removed. After reinstalling .NET SDK
+8.0.425 outside the repository, the complete C# suite passed 21/21. No language
+was skipped. Temporary Black and clang-format tools were also reinstalled and
+applied to the new sources.
+
+The elevator is a deterministic tick simulation, not a background motor system.
+It does not implement persistent requests or direction-aware passenger boarding.
+The Node lock coordinates async callbacks in one event loop, not OS threads.
+See LOCK_AND_ELEVATOR.md for exact commands and teaching scope.

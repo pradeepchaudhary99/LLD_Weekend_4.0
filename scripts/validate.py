@@ -30,6 +30,13 @@ EXPECTED = {
 
 EXPECTED.update(
     {
+        "ReadWriteLockDemo": "Cache sum: 60\nMissing: true\nStored negative: -1\nUpdated: 7",
+        "InterviewQuestions/ElevatorSystemDemo": "Selected: 0\nElevator 0 arrived: 3\nElevator 0 arrived: 5\nSelected: 0\nElevator 0 arrived: 4\nElevator 0 arrived: 1\nRound robin: 0\nRound robin: 1\nElevator 0 arrived: 0\nElevator 1 arrived: 0\nInvalid floor rejected\nInvalid direction rejected",
+    }
+)
+
+EXPECTED.update(
+    {
         "ConcurrencyFundamentals": "Counter: 4000",
         "ProducerConsumerDemo": "Consumed sum: 55\nInvalid capacity rejected",
         "ThreadPool": "Completed sum: 55\nTask failures: 1\nSubmission after shutdown rejected\nInvalid pool size rejected",

@@ -3,6 +3,7 @@
 
 import argparse
 import os
+import re
 from pathlib import Path
 import subprocess
 import tempfile
@@ -27,7 +28,9 @@ def run(language, lesson):
         if language == "Java":
             source = ROOT / language / (lesson + ".java")
             call(["javac", "-d", build, source])
-            call(["java", "-cp", build, stem.name])
+            package = re.search(r"^package\s+([\w.]+)\s*;", source.read_text(), re.MULTILINE)
+            entrypoint = (package.group(1) + "." if package else "") + stem.name
+            call(["java", "-cp", build, entrypoint])
         elif language == "Python":
             call(["python3", ROOT / language / (lesson + ".py")])
         elif language == "C++":
@@ -74,13 +77,15 @@ def run(language, lesson):
                 call(["go", "run", ".", lesson], ROOT / "Go")
         elif language == "C#":
             dotnet = os.environ.get("DOTNET", "dotnet")
-            if len(stem.parts) == 2:
+            if stem.parts[0] == "DesignPatterns":
                 project = ROOT / "C#" / "DesignPatterns" / "DesignPatterns.csproj"
                 prop = "-p:Lesson=" + stem.name
             else:
                 project = ROOT / "C#" / "LLDWeekend4.csproj"
                 entrypoints = {
                     "Main": "Oop.Program",
+                    "ReadWriteLockDemo": "Concurrency.ReadWriteLockDemo",
+                    "InterviewQuestions/ElevatorSystemDemo": "InterviewQuestions.ElevatorSystemDemo",
                     **{
                         name: "Concurrency." + name
                         for name in (

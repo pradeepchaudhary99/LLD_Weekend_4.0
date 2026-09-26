@@ -10,6 +10,7 @@
   },
   "include": [
     "*.ts",
-    "DesignPatterns/*.ts"
+    "DesignPatterns/*.ts",
+    "InterviewQuestions/*.ts"
   ]
 }
