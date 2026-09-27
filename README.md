@@ -33,6 +33,8 @@ Replace `DesignPatterns/ATMMachineStateDesign` above with any path below.
 
 | Lesson | What to observe |
 | --- | --- |
+| `InterviewQuestions/ParkingLotDemo` | Multi-level slots, selection strategies, tickets, fees, failed payments and safe release |
+| `InterviewQuestions/GameLoopPattern` | Input/update/render, pause/resume, finite ticks and quit |
 | `ReadWriteLockDemo` | Shared readers, exclusive writes, safe cache updates and missing values |
 | `InterviewQuestions/ElevatorSystemDemo` | Deterministic multi-car scheduling, selection strategies and arrival displays |
 | `ConcurrencyFundamentals` | Protect shared increments, then wait for all workers |
@@ -81,6 +83,9 @@ in each language’s named entry-point file.
 
 See [LOCK_AND_ELEVATOR.md](LOCK_AND_ELEVATOR.md) for the September 26 lessons,
 run commands, concurrency differences, and elevator simulation limits.
+
+See [PARKING_AND_GAME_LOOP.md](PARKING_AND_GAME_LOOP.md) for the September 27
+lessons, exact run commands, payment assumptions, and game-loop scope.
 
 ## Where to read the code
 
@@ -146,7 +151,7 @@ lesson; it is excluded from the pattern validation suite.
 Install all desired toolchains and run `npm ci` first.
 
 ```sh
-# 21 lessons × 7 languages, checked against explicit expected transcripts:
+# 23 lessons × 7 languages, checked against explicit expected transcripts:
 python3 scripts/validate.py
 
 # Or select only installed toolchains:

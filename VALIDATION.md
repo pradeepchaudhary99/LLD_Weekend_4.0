@@ -93,3 +93,25 @@ The elevator is a deterministic tick simulation, not a background motor system.
 It does not implement persistent requests or direction-aware passenger boarding.
 The Node lock coordinates async callbacks in one event loop, not OS threads.
 See LOCK_AND_ELEVATOR.md for exact commands and teaching scope.
+
+## Parking Lot and Game Loop — 2026-09-27
+
+Completed the two new Java drafts and all six translations. Original drafts were
+snapshotted under `/tmp/lld-originals-2026-09-27` before editing.
+
+- Expanded transcript suite: **161/161 passed** (23 lessons × seven languages),
+  including **14/14 new lesson runs**. No missing toolchains or skipped languages.
+- New Python behavior suite: **5/5 passed**, including eight competing entry
+  gates, fee boundaries, payment failure/exception retention, duplicate charging
+  prevention, selection/input validation, and game-loop boundary cases.
+- New Node parking/game-loop checks: passed.
+- Go parking tests: **2/2 passed with `-race`**, including competing entry and
+  exit gates, one slot allocation, one payment callback, and failed-payment
+  occupancy retention. `go vet ./...` passed.
+- Full TypeScript project build: passed.
+- C++ parking demo rerun after the overflow-safe rounding adjustment: passed.
+- Readability formatting and `git diff --check`: passed.
+
+Parking payment is a synchronous in-memory simulation, not a real integration.
+The game loop uses logical ticks, not wall-clock pacing. See
+PARKING_AND_GAME_LOOP.md for exact commands and scope.

@@ -30,6 +30,13 @@ EXPECTED = {
 
 EXPECTED.update(
     {
+        "InterviewQuestions/ParkingLotDemo": "Ticket 1: 0/1\nTicket 2: 1/4\nVehicle already parked\nNo compatible slot\nExit precedes entry\nPayment failed; vehicle remains parked\nNo compatible slot\nPaid: 100\nUnknown or closed ticket\nReused: 0/1\nBike slot: 2\nTruck slot: 3",
+        "InterviewQuestions/GameLoopPattern": "Tick 0: position 1\nTick 1: position 2\nTick 2: position 2\nTick 3: position 3\nStopped after 4 ticks",
+    }
+)
+
+EXPECTED.update(
+    {
         "ReadWriteLockDemo": "Cache sum: 60\nMissing: true\nStored negative: -1\nUpdated: 7",
         "InterviewQuestions/ElevatorSystemDemo": "Selected: 0\nElevator 0 arrived: 3\nElevator 0 arrived: 5\nSelected: 0\nElevator 0 arrived: 4\nElevator 0 arrived: 1\nRound robin: 0\nRound robin: 1\nElevator 0 arrived: 0\nElevator 1 arrived: 0\nInvalid floor rejected\nInvalid direction rejected",
     }
