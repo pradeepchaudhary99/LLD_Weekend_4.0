@@ -115,3 +115,30 @@ snapshotted under `/tmp/lld-originals-2026-09-27` before editing.
 Parking payment is a synchronous in-memory simulation, not a real integration.
 The game loop uses logical ticks, not wall-clock pacing. See
 PARKING_AND_GAME_LOOP.md for exact commands and scope.
+
+## Chess and Payment Service — 2026-10-03
+
+Completed the two new, previously untracked Java drafts and translated each into
+Python, C++, Go, C#, JavaScript and TypeScript. Original drafts were snapshotted
+before editing. See `CHESS_AND_PAYMENTS.md` for exact run commands and scope.
+
+- `python3 scripts/validate.py`: **175/175 passed** (25 lessons × seven languages).
+- After C# naming cleanup, `python3 scripts/validate.py --languages 'C#'`:
+  **25/25 passed** again.
+- `python3 scripts/check_chess_payments.py`: **all native suites passed** in all
+  seven languages. Chess fixtures cover legal/blocked movement, capture, turns,
+  invalid squares, pinned pieces, blocking/capturing a checking piece, pawn attacks,
+  adjacent kings, excluded promotion, mate, stalemate, draw and rejected-move stability.
+- Payment checks cover conflicting keys, amount/provider validation, all four method
+  identifiers, retry exhaustion without false failure, no retry on client replay,
+  failed/full/duplicate refunds, duplicate and stale webhooks, wrong-provider
+  rejection and snapshot independence. Concurrent same-key tests passed in Java,
+  Python, C++, Go and C#; Go's race detector passed. JS/TS calls are synchronous.
+- `npm run build:typescript`: passed for the complete TypeScript project.
+- JavaScript generated from the new TypeScript lessons and formatted; all new
+  teaching sources follow their language formatter and use expanded method bodies.
+
+Used JDK 22, Python 3.13, the C++17 compiler, Go 1.26, Node.js 22, TypeScript 5.9.3
+and .NET SDK 8.0.425. The .NET SDK was installed temporarily outside the repository;
+no toolchains or build artifacts are committed. Chess follows the documented
+reduced ruleset, and payment gateways are in-memory simulations, not live integrations.

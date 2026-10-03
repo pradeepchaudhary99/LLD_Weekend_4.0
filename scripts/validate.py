@@ -11,6 +11,8 @@ import sys
 from run import ROOT, LANGUAGES
 
 EXPECTED = {
+    "InterviewQuestions/ChessGameDemo": "Fool's mate: CHECKMATE\nNo legal reply: STALEMATE\nBare kings: DRAW",
+    "InterviewQuestions/PaymentServiceLLD": "Payment: SUCCESS\nGateway charges: 1\nRefund: REFUNDED\nLate webhook: REFUNDED",
     "SimpleFactoryDesignPattern": "SMS: Hello\nSlack: Hello\nWhatsApp: Hello\nSame instance: true\nUnknown notification type",
     "FactoryMethodDesignPattern": "SMS: message\nWhatsApp: message\nPush: message",
     "BuilderDesignPattern": "pradeep 23 Delhi 100.0",

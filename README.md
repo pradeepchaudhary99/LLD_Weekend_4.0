@@ -4,6 +4,9 @@ Runnable Low Level Design lessons in **Java**, with translations in **Python,
 C++, Go, C#, JavaScript, and TypeScript**. Java is the classroom reference.
 Everything runs locally: no payment account, Redis instance, or other server is required.
 
+See [Chess and Payment Service](CHESS_AND_PAYMENTS.md) for the newest lessons,
+exact run commands, design walkthroughs and supported rules.
+
 ## Start here
 
 Run commands from this repository's root. Install Python 3.10+ for the runner,
@@ -33,6 +36,8 @@ Replace `DesignPatterns/ATMMachineStateDesign` above with any path below.
 
 | Lesson | What to observe |
 | --- | --- |
+| `InterviewQuestions/ChessGameDemo` | Legal moves, king safety, checkmate, stalemate and bare-kings draw |
+| `InterviewQuestions/PaymentServiceLLD` | Simulated gateways, idempotency, bounded retries, refunds and webhooks |
 | `InterviewQuestions/ParkingLotDemo` | Multi-level slots, selection strategies, tickets, fees, failed payments and safe release |
 | `InterviewQuestions/GameLoopPattern` | Input/update/render, pause/resume, finite ticks and quit |
 | `ReadWriteLockDemo` | Shared readers, exclusive writes, safe cache updates and missing values |
@@ -151,7 +156,7 @@ lesson; it is excluded from the pattern validation suite.
 Install all desired toolchains and run `npm ci` first.
 
 ```sh
-# 23 lessons × 7 languages, checked against explicit expected transcripts:
+# 25 lessons × 7 languages, checked against explicit expected transcripts:
 python3 scripts/validate.py
 
 # Or select only installed toolchains:
