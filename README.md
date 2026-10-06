@@ -41,7 +41,7 @@ Replace `DesignPatterns/ATMMachineStateDesign` above with any path below.
 | `InterviewQuestions/ParkingLotDemo` | Multi-level slots, selection strategies, tickets, fees, failed payments and safe release |
 | `InterviewQuestions/GameLoopPattern` | Input/update/render, pause/resume, finite ticks and quit |
 | `ReadWriteLockDemo` | Shared readers, exclusive writes, safe cache updates and missing values |
-| `InterviewQuestions/ElevatorSystemDemo` | Deterministic multi-car scheduling, selection strategies and arrival displays |
+| `InterviewQuestions/ElevatorSystemDemo` | Per-elevator Java Runnable workers, selection strategies and arrival displays |
 | `ConcurrencyFundamentals` | Protect shared increments, then wait for all workers |
 | `ProducerConsumerDemo` | Capacity-one backpressure with a finite consumer lifecycle |
 | `ThreadPool` | Custom worker queue, task failure isolation, drain and shutdown |

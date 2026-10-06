@@ -142,3 +142,16 @@ Used JDK 22, Python 3.13, the C++17 compiler, Go 1.26, Node.js 22, TypeScript 5.
 and .NET SDK 8.0.425. The .NET SDK was installed temporarily outside the repository;
 no toolchains or build artifacts are committed. Chess follows the documented
 reduced ruleset, and payment gateways are in-memory simulations, not live integrations.
+
+## Java elevator Runnable rewrite — 2026-10-06
+
+- `python3 scripts/validate.py --languages Java`: **25/25 passed**.
+- `ElevatorRunnableChecks`: **10/10 repeated runs passed**, covering separate
+  worker threads, new requests while a car's callback is running, stop deduplication,
+  sweep/reversal, idle wakeup, current-floor stops, invalid inputs, round-robin
+  assignment, interrupted waiting, draining on close, preserved caller interruption,
+  callback failure propagation and no remaining elevator threads.
+- The Java demo keeps the shared expected transcript by buffering display events.
+  Other language editions were not changed or revalidated in this Java-only rewrite.
+
+Compile and run the focused checks using the commands in `LOCK_AND_ELEVATOR.md`.

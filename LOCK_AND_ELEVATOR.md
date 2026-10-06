@@ -71,18 +71,48 @@ moving. Invalid floors, elevator IDs, building sizes, and hall directions fail
 explicitly; the top floor cannot request UP and the ground floor cannot request
 DOWN.
 
-The draft's incomplete background-thread loop is replaced by a **deterministic
-tick simulation**. One tick advances each elevator by at most one floor;
-`runUntilIdle` drains the current requests and returns. This avoids wall-clock
-sleeps, missed notifications, and programs that never finish. The Java, Python,
-C++, Go, and C# controller APIs serialize state changes with a lock; JS/TS methods
-are synchronous and contain no `await`. State belongs to the controller: use its
-request APIs rather than mutating an elevator or strategy directly.
+### Java: one Runnable per elevator
 
-Displays and selection strategies are trusted, quick callbacks. They must not
-throw, block, or re-enter the controller; callbacks run while the controller owns
-its lock. New requests from other threads wait while `runUntilIdle` is executing.
-The simulation does not implement concurrent physical elevator motors.
+`Elevator implements Runnable`. The controller creates one named `Thread` per car,
+and `run()` owns waiting, stop selection, one-floor movement, reversal and arrival
+notifications. The controller only assigns requests and manages worker lifecycles.
+
+- `start()` starts the workers once. For convenient classroom use, `runUntilIdle()`
+  calls `start()` automatically. Requests can be queued before the first start.
+- Each car protects its own floor, direction and pending `TreeSet` with its monitor.
+  An idle car calls `wait()` in a loop; `addStop()` calls `notifyAll()`. It waits
+  without spinning, and producers may submit while cars are running.
+- Requests for the same **pending** floor coalesce. A request after that stop has
+  already been served is new work. Stop direction and reversal rules are unchanged.
+- `runUntilIdle()` waits for empty queues **and completed arrival callbacks**. It
+  releases the controller lock while waiting, then rechecks all cars under the
+  admission lock. New requests may be submitted after it returns; stop producers
+  first if you need a final drain. The waiting caller can be interrupted.
+- Use `try (ElevatorSystem system = ...)` so `close()` rejects new requests, drains
+  accepted stops, wakes idle cars and joins every worker. Even a close before start
+  drains queued work. Repeated close is safe; an interrupted closing caller gets
+  its interrupt status restored after cleanup.
+- Observer callbacks execute on the elevator's worker, outside its state lock.
+  They must be thread-safe and finish promptly. One slow car does not block another
+  car, but an indefinitely blocked callback prevents that car from draining.
+  Calling `runUntilIdle()` or `close()` from a worker is rejected to avoid self-wait.
+  Runtime callback failures and worker interruption are surfaced to callers waiting
+  for completion and to `close()`; no automatic recovery is attempted.
+
+`Display` buffers events and prints them after a drain, ordered by elevator ID while
+preserving each car's arrival sequence. This makes the sample transcript stable;
+actual arrivals across different workers are concurrent. There is no artificial
+travel delay. Nearest selection reads synchronized live floor snapshots, so selection
+while cars move is best-effort rather than a globally frozen position comparison.
+Selection strategies remain quick, trusted callbacks under the controller lock.
+
+### Other language editions
+
+Python, C++, Go, C#, JavaScript and TypeScript retain the deterministic tick version:
+one tick advances each car by at most one floor, and `runUntilIdle` drives the loop.
+Their callbacks run under the controller's execution boundary and must not block,
+throw or re-enter it. The Java Runnable rewrite is the threaded edition; the shared
+request rules and demo transcript remain the same across editions.
 
 Hall direction is validated but does not affect assignment or boarding: nearest
 selection considers distance, not passenger direction or elevator capacity.
@@ -105,17 +135,25 @@ node scripts/test_lock_elevator_node.js
 (cd Go && go test -race ./ReadWriteLockDemo && go vet ./...)
 npm run build:typescript
 
-# Java custom-lock checks, compiled separately from unrelated lessons:
+# Java Runnable checks, compiled separately from unrelated lessons:
+build_dir=$(mktemp -d)
+javac -d "$build_dir" Java/InterviewQuestions/ElevatorSystemDemo.java scripts/java_checks/ElevatorRunnableChecks.java
+java -cp "$build_dir" InterviewQuestions.ElevatorRunnableChecks
+rm -r "$build_dir"
+
+# Java custom-lock checks:
 build_dir=$(mktemp -d)
 javac -d "$build_dir" Java/ReadWriteLockDemo.java scripts/java_checks/ReadWriteLockChecks.java
 java -cp "$build_dir" ReadWriteLockChecks
 rm -r "$build_dir"
 ```
 
-The full transcript suite contains 21 lessons × seven languages (147 runs).
+The full transcript suite contains 25 lessons × seven languages (175 runs).
 Focused tests cover simultaneous readers, writer exclusion, release on exception,
 Java waiting-writer interruption, concurrent cache access under Go's race detector,
 elevator stop deduplication/reversal, invalid inputs, and strategy rotation.
+Java Runnable checks also cover independent workers, requests during travel, idle
+wakeup, interrupted waiting, callback failures, graceful draining and thread cleanup.
 
 After editing TypeScript, `npm run sync:javascript` regenerates the JavaScript
 lessons, adds declaration spacing, and applies Prettier. All seven language
