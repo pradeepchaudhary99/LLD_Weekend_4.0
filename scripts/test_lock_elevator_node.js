@@ -47,12 +47,12 @@ async function main() {
     for (const floor of [0, 0, 10]) {
         system.internalRequest(0, floor);
     }
-    system.runUntilIdle();
+    await system.runUntilIdle();
     for (const floor of [7, 2]) {
         system.internalRequest(0, floor);
     }
-    system.runUntilIdle();
-    system.runUntilIdle();
+    await system.runUntilIdle();
+    await system.runUntilIdle();
     assert.deepEqual(arrivals, [
         [0, 0],
         [0, 10],
@@ -70,6 +70,8 @@ async function main() {
     assert.throws(() => system.internalRequest(1, 0), RangeError);
     assert.throws(() => system.internalRequest(0, 11), RangeError);
     assert.throws(() => system.externalRequest(10, "UP"), RangeError);
+    await system.close();
+    await multiple.close();
     console.log("Node lock and elevator checks passed");
 }
 

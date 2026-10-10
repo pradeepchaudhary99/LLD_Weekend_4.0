@@ -11,6 +11,8 @@ import sys
 from run import ROOT, LANGUAGES
 
 EXPECTED = {
+    "InterviewQuestions/SplitWiseDemo": "Equal shares: 34,33,33\nB owes A: 13\nA owes C: 18\nAfter settlement: 0\nHistory entries: 4",
+    "InterviewQuestions/NotificationSystemDemo": "Sent: high/EMAIL,high/SMS,low/EMAIL,low/SMS\nHigh: SENT\nSMS attempts: 2\nPush: FAILED\nOpt-out: SKIPPED",
     "InterviewQuestions/ChessGameDemo": "Fool's mate: CHECKMATE\nNo legal reply: STALEMATE\nBare kings: DRAW",
     "InterviewQuestions/PaymentServiceLLD": "Payment: SUCCESS\nGateway charges: 1\nRefund: REFUNDED\nLate webhook: REFUNDED",
     "SimpleFactoryDesignPattern": "SMS: Hello\nSlack: Hello\nWhatsApp: Hello\nSame instance: true\nUnknown notification type",

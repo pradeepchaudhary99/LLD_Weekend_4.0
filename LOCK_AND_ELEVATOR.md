@@ -106,13 +106,30 @@ travel delay. Nearest selection reads synchronized live floor snapshots, so sele
 while cars move is best-effort rather than a globally frozen position comparison.
 Selection strategies remain quick, trusted callbacks under the controller lock.
 
-### Other language editions
+### Other language worker editions — October 10 update
 
-Python, C++, Go, C#, JavaScript and TypeScript retain the deterministic tick version:
-one tick advances each car by at most one floor, and `runUntilIdle` drives the loop.
-Their callbacks run under the controller's execution boundary and must not block,
-throw or re-enter it. The Java Runnable rewrite is the threaded edition; the shared
-request rules and demo transcript remain the same across editions.
+Python uses one `Thread` and `Condition` per elevator; C++ uses `std::thread`,
+mutexes and condition variables; Go uses one goroutine and `sync.Cond` per car;
+C# uses a `Thread` and monitor per car. These workers now own movement and waiting,
+matching the Java design. Callbacks run outside the car's state lock. Requests
+remain admissible while a car is processing another stop. Each controller starts
+workers once, drains accepted work on close/dispose, joins/waits for every car,
+and surfaces observer failures through idle waits and explicit close.
+
+JavaScript/TypeScript use **one asynchronous task per car on a single Node event
+loop**, yielding between floors. Idle cars have no running task until a new request
+wakes them. `runUntilIdle()` and `close()` now return promises and must be awaited.
+Observers may return promises, allowing another car to progress while one observer
+awaits. Synchronous CPU-heavy or blocking callbacks still block the entire event
+loop; these are not worker threads or parallel motors.
+
+All displays buffer events and print stable per-car sequences after a drain. Callback
+implementations must be thread-safe where applicable and finish promptly. Lifecycle
+methods belong to the owner: callbacks must not wait for, close or destroy their own
+system. Java/Python/C# explicitly reject worker self-waits; other editions rely on
+this contract. C++ destructors clean up without throwing, so use explicit
+`runUntilIdle()`/`close()` to observe failures. External worker cancellation and hard
+shutdown deadlines are outside the translations' scope.
 
 Hall direction is validated but does not affect assignment or boarding: nearest
 selection considers distance, not passenger direction or elevator capacity.
@@ -131,6 +148,7 @@ repeated idle execution, and invalid floor/direction rejection.
 ```sh
 python3 scripts/validate.py
 python3 scripts/test_lock_elevator.py
+python3 scripts/check_notification_splitwise.py
 node scripts/test_lock_elevator_node.js
 (cd Go && go test -race ./ReadWriteLockDemo && go vet ./...)
 npm run build:typescript
@@ -148,7 +166,7 @@ java -cp "$build_dir" ReadWriteLockChecks
 rm -r "$build_dir"
 ```
 
-The full transcript suite contains 25 lessons × seven languages (175 runs).
+The full transcript suite contains 27 lessons × seven languages (189 runs).
 Focused tests cover simultaneous readers, writer exclusion, release on exception,
 Java waiting-writer interruption, concurrent cache access under Go's race detector,
 elevator stop deduplication/reversal, invalid inputs, and strategy rotation.

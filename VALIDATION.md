@@ -155,3 +155,37 @@ reduced ruleset, and payment gateways are in-memory simulations, not live integr
   Other language editions were not changed or revalidated in this Java-only rewrite.
 
 Compile and run the focused checks using the commands in `LOCK_AND_ELEVATOR.md`.
+
+## Notifications, Splitwise and elevator translations — 2026-10-10
+
+Completed the two newly added Java drafts (`NotificationSystemDemo` and
+`SplitWiseDemo`) and translated them into Python, C++, Go, C#, JavaScript and
+TypeScript. Originals were snapshotted before editing. Also translated the
+October 6 Java elevator worker rewrite into all six other languages.
+
+- `python3 scripts/validate.py`: **189/189 passed**, including the final worker
+  editions and both new lessons (27 lessons × seven languages).
+- `python3 scripts/check_notification_splitwise.py`: **all native suites passed**.
+  Includes Python and Node lock/elevator regression checks, Java's existing
+  Runnable tests, new notification/ledger checks, C++/C# worker checks, native Go
+  tests, and separately compiled TypeScript checks.
+- Notification checks: pending priority/FIFO ordering, per-channel retry counts,
+  bounded failures, opt-out, template substitution, unknown IDs/templates, invalid
+  priority, conflicting/repeated IDs, concurrent duplicate submission in threaded
+  editions, and close-before-start draining. JS/TS also check literal `$&` template
+  values so replacement text cannot accidentally expand substitution tokens.
+- Ledger checks: equal and largest-remainder percentage rounding, zero percentages,
+  exact sums, antisymmetric/group-isolated balances, unknown/duplicate participants,
+  amount bounds, duplicate transaction IDs, over-settlement, membership changes,
+  concurrent expense updates in threaded editions, snapshots, and full rollback
+  when a later participant would exceed the bilateral balance limit.
+- Elevator checks: a blocked/suspended observer on one car does not prevent another
+  car from arriving; new stops preserve upward sweep then reversal. Shutdown rejects
+  new work, drains and waits for workers. Go also checks observer-failure propagation.
+- `go test -race -count=1` passed for all three changed Go lessons.
+- `npm run build:typescript`: full project passed.
+
+Toolchains: JDK 22, Python 3.13, C++17 compiler, Go 1.26, Node.js 22, TypeScript
+5.9.3 and temporary .NET SDK 8.0.425. No missing toolchains or failed checks remain.
+See `NOTIFICATIONS_AND_SPLITWISE.md` and `LOCK_AND_ELEVATOR.md` for exact commands,
+concurrency models and teaching-simulation limits. No build artifacts are committed.

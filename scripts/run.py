@@ -84,6 +84,8 @@ def run(language, lesson):
                 project = ROOT / "C#" / "LLDWeekend4.csproj"
                 entrypoints = {
                     "Main": "Oop.Program",
+                    "InterviewQuestions/SplitWiseDemo": "InterviewQuestions.SplitWiseDemo",
+                    "InterviewQuestions/NotificationSystemDemo": "InterviewQuestions.NotificationSystemDemo",
                     "InterviewQuestions/ChessGameDemo": "InterviewQuestions.ChessGameDemo",
                     "InterviewQuestions/PaymentServiceLLD": "InterviewQuestions.PaymentServiceLLD",
                     "InterviewQuestions/ParkingLotDemo": "InterviewQuestions.ParkingLotDemo",

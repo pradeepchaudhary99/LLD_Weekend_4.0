@@ -73,6 +73,7 @@ class LessonTests(unittest.TestCase):
     def test_stops_deduplicate_reverse_and_idle(self):
         display = RecordingDisplay()
         system = ElevatorSystem(1, 10, display)
+        self.addCleanup(system.close)
         system.internal_request(0, 0)
         system.internal_request(0, 0)
         system.internal_request(0, 10)
@@ -85,6 +86,7 @@ class LessonTests(unittest.TestCase):
 
     def test_strategy_switch_and_validation(self):
         system = ElevatorSystem(2, 10, RecordingDisplay())
+        self.addCleanup(system.close)
         self.assertEqual(system.external_request(2, "UP"), 0)
         system.set_strategy(RoundRobinStrategy())
         self.assertEqual([system.external_request(0, "UP") for _ in range(3)], [0, 1, 0])
