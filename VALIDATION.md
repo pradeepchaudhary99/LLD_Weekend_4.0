@@ -189,3 +189,22 @@ Toolchains: JDK 22, Python 3.13, C++17 compiler, Go 1.26, Node.js 22, TypeScript
 5.9.3 and temporary .NET SDK 8.0.425. No missing toolchains or failed checks remain.
 See `NOTIFICATIONS_AND_SPLITWISE.md` and `LOCK_AND_ELEVATOR.md` for exact commands,
 concurrency models and teaching-simulation limits. No build artifacts are committed.
+
+## 2026-10-11: interview context and food delivery
+
+- Added requirements, entities, operations, design decisions, scope and run commands
+  to all eight interview topics in seven languages (56 source files).
+- Preserved the unfinished Java Splitwise and food-delivery classroom sources under
+  `classroom-drafts/2026-10-11/` as non-compiling reference text. The final Java
+  Splitwise source retains the previously validated complete implementation.
+- Completed the scoped food-delivery MVP in all seven languages; see
+  [FOOD_DELIVERY.md](FOOD_DELIVERY.md) for assumptions and exact run/check commands.
+- `scripts/validate.py`: **196/196 passed** (28 lessons in seven languages).
+- Food-delivery Python boundary/snapshot/concurrency suite: **3 tests passed**.
+- Food-delivery Java concurrent submission/reservation checks: **passed**.
+- Food-delivery Go race-detector concurrency check: **passed**.
+- `scripts/check_notification_splitwise.py`: **all checks passed**, including native
+  Java/C++/C# suites, Go race checks, Python, JavaScript and freshly compiled TypeScript.
+- .NET was invoked using the `DOTNET` environment override for the available .NET 8
+  SDK. An initial focused-suite invocation omitted that override and could not locate
+  `dotnet`; rerunning with the configured SDK passed. No toolchain checks remain skipped.

@@ -1,0 +1,185 @@
+/*
+ * INTERVIEW DESIGN NOTES - Food Delivery (classroom design draft)
+ *
+ * Implementation status: local classroom draft; requirements below describe
+ * the intended design. The existing draft is preserved and is not runnable.
+ *
+ * Functional requirements:
+ * - Browse restaurants and menus; build a cart from one restaurant.
+ * - Place and pay for an order; restaurant accepts/rejects and updates preparation.
+ * - Reserve an available delivery partner and track pickup/delivery.
+ * - Cancel eligible orders and notify the customer of important transitions.
+ *
+ * Non-functional requirements:
+ * - Design for idempotent payment and order submission to prevent duplicate charges.
+ * - Protect order transitions and partner reservation against concurrent updates.
+ * - Separate pricing, payment, delivery and notification dependencies.
+ * - Preserve order price/address snapshots and make transitions auditable.
+ *
+ * Core entities and responsibilities:
+ * - Customer/Location: identity and delivery address/location.
+ * - Restaurant/MenuItem: accepting-orders flag, menu prices and availability.
+ * - Cart/CartItem: selected restaurant, item IDs and quantities.
+ * - Order: customer, restaurant, price/address snapshot and lifecycle status.
+ * - Payment: charge/refund identity and result.
+ * - DeliveryPartner/Delivery: availability, assignment, pickup and drop-off state.
+ * - ZomatoFoodDelivery: orchestrates repositories and external service boundaries.
+ *
+ * Key operations and flow:
+ * - Proposed flow: validate cart -> price snapshot -> create order -> charge with
+ * - stable ID -> restaurant decision -> reserve partner -> pickup -> delivered.
+ * - Define cancellation/refund policy for each state before implementing transitions.
+ *
+ * Design choices and invariants:
+ * - Proposed: Strategy for pricing; repositories and provider interfaces for I/O.
+ * - A cart must not mix restaurants; quantities and prices must be valid.
+ * - Partner reservation must be atomic; delivered orders must not revert to preparing.
+ * - Use integer minor units or decimal money instead of double in the final design.
+ *
+ * Assumptions and out of scope:
+ * - This file is an unfinished pseudocode draft, not a working implementation.
+ * - Payment/order states and failure compensation still need concrete design.
+ * - No production routing, live GPS, real providers or distributed guarantees yet.
+ *
+ * Interview discussion and checks:
+ * - Plan tests for unavailable items, rejected payment, duplicate requests, partner
+ * - contention, invalid state changes, cancellation and refund compensation.
+ * - Clarify who can cancel, when payment is captured and what happens if no rider exists.
+ *
+ * Run / validation:
+ * - No working entry point yet; do not treat these notes as a compile guarantee.
+ */
+
+package InterviewQuestions;
+
+/*
+Functional Requirements:
+    Browse the restraunts and their menus 
+    add items from one restraunt to a cart 
+    place an order and pay 
+    Restraunts accepts/rejects the order and update preparation status 
+    assign an available delivery partner 
+    Track delivery status 
+    cancel eligble orders 
+    send notification to users 
+    handle payments for the application
+
+Non-Functional Requirements: 
+    avoid double payment 
+    thread-safety 
+    state transition
+    
+
+
+Core entities:
+ ZomatoService
+ Customer
+ Restraunt
+ Menu 
+ MenuItem   : Paneer pizza  
+ Cart / CartItems   
+ Order 
+ Payment 
+ DeliveryPartner 
+ Delivery 
+ Notification
+*/
+
+enum PartnerStatus{
+    AVAILABLE, RESERVED, OFFLINE
+}
+
+enum DeliveryStatus{
+    ASSIGNED, PICK_UP, DELIVVERED, CANCELLED
+}
+
+class Location{
+    double latitude;
+    double longitude;
+}
+
+
+class Customer{
+    - id
+    - name 
+    - Map<String, String> address;
+}
+
+class Restraunt{
+    -id 
+    - name 
+    - Location location; 
+    -  boolean acceptingOrders;
+    - Map<String, MenuItem> menu;
+    - double rating;
+
+}
+
+class MenuItem{
+    - id 
+    - restrauntId 
+    - name 
+    - price 
+    - boolean avilable; 
+
+}
+
+class CartItem{
+    - quantity 
+    - menuItemId 
+}
+
+class Cart{
+    String customerId;
+    String restrauntId;
+    Map<String, CartItem> items;
+}
+
+
+class Order{
+    id;
+    customerId;
+    restrauntId;
+    deliveryAddress;
+    cart cart; 
+    double amount;
+    OrderStatus orderStatus; 
+}
+
+enum OrderStatus{
+    PLACED, ACCEPTED, PREPARING, REJECTED, CANCELLED, DELIVERED,, OUT_FOR_DELIVERY
+}
+
+class DeliveryPartner{
+    id;
+    name;
+    currentLocation;
+    partnerStatus status;
+    List<String> rejectedOrders; 
+}
+
+
+class Delivery{
+    String id;
+    orderId;
+    partnerId;
+    pickuplocation;.
+    droplocation;
+    delivery_status;
+}
+
+class ZomatoFoodDelivery{
+    CartRepository cartRepository;
+    RestrauntRepository respository;
+    OrderRepository orderRepository;
+    PricingStrategy pricingStragegy;
+    PaymentService paymentService;
+    DeliveryService deliveryService;
+    NotificationService notficationService;
+    
+}
+
+
+public class Zomato_Food_Delivery {
+    
+}

@@ -1,3 +1,60 @@
+/*
+ * INTERVIEW DESIGN NOTES - Parking Lot
+ *
+ * Implementation status: runnable in-memory teaching example. Requirements
+ * below describe this edition; production extensions are explicitly excluded.
+ *
+ * Functional requirements:
+ * - Park bikes, cars and trucks in matching slots across multiple levels.
+ * - Issue tickets recording vehicle, slot and entry time.
+ * - Support first-fit and nearest-exit assignment strategies.
+ * - Calculate fees on exit, collect payment and release the slot only on success.
+ * - Reject duplicate parked vehicles, full lots and unknown/closed tickets.
+ *
+ * Non-functional requirements:
+ * - Keep allocation, ticket and occupancy updates consistent across gates.
+ * - Keep pricing, allocation and payment dependencies replaceable.
+ * - Preserve the ticket and occupied slot when payment fails.
+ * - Use explicit times and integer fees for deterministic teaching scenarios.
+ *
+ * Core entities and responsibilities:
+ * - Vehicle/VehicleType: identity and required slot category.
+ * - Slot: level, ID, compatible type, distance to exit and occupancy.
+ * - Ticket: links a vehicle and allocated slot to its entry time.
+ * - ParkingLotManager: owns active tickets, parked plates and allocation state.
+ * - EntryGate/ExitGate: delegate to the shared manager.
+ * - Assignment strategy, fee strategy and Payment: interchangeable policies.
+ *
+ * Key operations and flow:
+ * - Entry -> validate -> find compatible free slot -> mark occupied -> issue ticket.
+ * - Exit -> find ticket -> validate elapsed time -> compute fee -> attempt payment.
+ * - Payment success removes ticket/plate and frees the slot; failure changes none.
+ *
+ * Design choices and invariants:
+ * - Composition and Strategy keep gate code independent of allocation and pricing.
+ * - Exact vehicle-type matching; nearest-exit ties preserve source slot order.
+ * - HourlyFee charges 50 units per started hour, with at least one hour.
+ * - The manager owns slot mutation; callers must not mutate returned slot objects.
+ *
+ * Assumptions and out of scope:
+ * - Synchronous fake payment; no remote charge reconciliation or durable storage.
+ * - No reservations, EV charging, oversized-slot fallback or physical gate control.
+ * - Payment callbacks are trusted and quick; avoid re-entering the manager.
+ *
+ * Interview discussion and checks:
+ * - Test duplicate entry, exhausted capacity, failed payment, negative duration,
+ * - repeat exit and reuse of a released slot.
+ * - Selection scans the slots; discuss indexed availability for larger lots.
+ *
+ * Concurrency in this edition:
+ * - Synchronous operations on one event loop; no cross-worker safety.
+ *
+ * Run / validation:
+ * - From repository root:
+ *   python3 scripts/run.py JavaScript InterviewQuestions/ParkingLotDemo
+ * - Prerequisites and focused checks: see README.md and the topic guide.
+ */
+
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ExitGate =

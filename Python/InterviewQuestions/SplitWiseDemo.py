@@ -1,3 +1,58 @@
+# INTERVIEW DESIGN NOTES - Splitwise / Expense Sharing
+#
+# Implementation status: runnable in-memory teaching example. Requirements
+# below describe this edition; production extensions are explicitly excluded.
+#
+# Functional requirements:
+# - Register users, create groups and add/remove members.
+# - Add expenses with equal, exact or percentage allocation.
+# - Show bilateral group balances and record settlements.
+# - Keep expense/settlement history and reject duplicate transaction IDs.
+#
+# Non-functional requirements:
+# - Use exact monetary arithmetic; preserve the total across rounding.
+# - Validate a whole transaction before changing balances/history.
+# - Serialize updates in one process and return independent snapshots.
+# - Keep split policy separate from group and balance management.
+#
+# Core entities and responsibilities:
+# - User: registered participant identity; Group: members and group ledger.
+# - Expense: payer, total, participants and computed shares.
+# - Split/SplitStrategy: allocates the total; equal, exact and percentage variants.
+# - Balance manager/service: nets bilateral debt and records settlements/history.
+# - The runnable editions encode some entities as IDs, maps and history entries.
+#
+# Key operations and flow:
+# - expense -> validate group/payer/participants -> choose split rule -> calculate
+# - shares -> validate copied balance updates -> commit balances and history.
+# - settlement -> validate outstanding debt -> reduce the pair balance -> record.
+#
+# Design choices and invariants:
+# - Intended final design uses integer minor units, not floating-point money.
+# - Equal split assigns leftovers in input order; percentage uses largest remainders.
+# - Percentage weights total 10000 basis points; exact shares total the amount.
+# - A owes B is the negative of B owes A; groups maintain separate ledgers.
+# - Leaving a group requires zero debt with every member, not merely net zero.
+#
+# Assumptions and out of scope:
+# - Runnable editions: one currency, <=100 members, expense <=1,000,000,000 units,
+# - and absolute bilateral balance <=1,000,000,000,000 units.
+# - No actual money transfer, authentication, persistence, currency conversion,
+# - expense editing or cross-group/multilateral debt simplification.
+#
+# Interview discussion and checks:
+# - Test rounding, duplicate participants/IDs, sum mismatches and over-settlement.
+# - Test membership rules, concurrent expenses and rollback at the balance bound.
+# - Discuss append-only history and durable atomic transactions.
+#
+# Concurrency in this edition:
+# - Instance-level synchronization protects service/game mutations.
+#
+# Run / validation:
+# - From repository root:
+#   python3 scripts/run.py Python InterviewQuestions/SplitWiseDemo
+# - Prerequisites and focused checks: see README.md and the topic guide.
+
 """Single-currency group ledger, using integer minor units and atomic updates."""
 
 import re

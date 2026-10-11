@@ -1,3 +1,56 @@
+# INTERVIEW DESIGN NOTES - Elevator System
+#
+# Implementation status: runnable in-memory teaching example. Requirements
+# below describe this edition; production extensions are explicitly excluded.
+#
+# Functional requirements:
+# - Support multiple elevators, hall requests and in-car floor requests.
+# - Select cars using nearest-distance or round-robin strategies.
+# - Deduplicate pending stops; continue in direction before reversing.
+# - Notify arrivals, accept requests while cars work and wait for idle completion.
+# - Reject invalid floors/directions; drain accepted work and shut down cleanly.
+#
+# Non-functional requirements:
+# - Each elevator processes its own work independently.
+# - Protect mutable car state; never hold a car lock during an observer callback.
+# - Idle workers wait rather than spin; lifecycle cleanup must wait for workers.
+# - Make worker failures observable and keep the printed demo reproducible.
+#
+# Core entities and responsibilities:
+# - Elevator: owns position, direction, pending stops and the worker loop.
+# - ElevatorSystem: validates and assigns requests, starts and closes workers.
+# - SelectionStrategy: chooses a car; nearest and round-robin are implementations.
+# - Observer/Display: receives arrivals and buffers stable per-car output.
+#
+# Key operations and flow:
+# - external request -> validate -> select car -> enqueue stop -> wake car.
+# - Car run loop -> choose direction -> move one floor -> notify an arrival.
+# - run-until-idle waits for empty queues and completed callbacks; close drains.
+#
+# Design choices and invariants:
+# - Strategy separates assignment policy; Observer separates arrival presentation.
+# - A pending stop is deduplicated; a request after service is new work.
+# - Nearest selection uses live snapshots, not an atomic fleet-wide position.
+# - Owner code manages lifecycle; callbacks must not wait for their own system.
+#
+# Assumptions and out of scope:
+# - Floors are 0 through topFloor; hall direction does not affect assignment.
+# - No real motor timing, doors, capacity, emergency controls or persistence.
+# - Callbacks must finish promptly; no hard shutdown deadline or crash recovery.
+#
+# Interview discussion and checks:
+# - Test independent cars with a blocked observer, requests during travel and reversal.
+# - Test idle wakeup, duplicate stops, invalid requests and cleanup without leaks.
+# - Discuss direction-aware dispatch, starvation, capacity and emergency states.
+#
+# Concurrency in this edition:
+# - Thread per car; Condition-protected state and idle waiting.
+#
+# Run / validation:
+# - From repository root:
+#   python3 scripts/run.py Python InterviewQuestions/ElevatorSystemDemo
+# - Prerequisites and focused checks: see README.md and the topic guide.
+
 """One worker thread per elevator; the controller only assigns requests."""
 
 from threading import Condition, RLock, Thread, current_thread

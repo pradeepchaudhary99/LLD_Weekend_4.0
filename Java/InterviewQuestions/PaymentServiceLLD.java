@@ -1,3 +1,59 @@
+/*
+ * INTERVIEW DESIGN NOTES - Payment Service
+ *
+ * Implementation status: runnable in-memory teaching example. Requirements
+ * below describe this edition; production extensions are explicitly excluded.
+ *
+ * Functional requirements:
+ * - Create payments for CARD, UPI, NET_BANKING and WALLET methods.
+ * - Choose a registered gateway and track PROCESSING, SUCCESS, FAILED or REFUNDED.
+ * - Deduplicate identical keys and reject changed payloads under the same key.
+ * - Retry ambiguous gateway outcomes up to three total attempts.
+ * - Support full refunds and trusted, deduplicated reconciliation webhooks.
+ *
+ * Non-functional requirements:
+ * - Serialize state transitions within a service instance.
+ * - Use integer minor units and immutable/copied payment snapshots.
+ * - Retain stable gateway payment identity across retries.
+ * - Keep provider integration replaceable and failure scenarios testable locally.
+ *
+ * Core entities and responsibilities:
+ * - Request: order, amount, method and gateway identity.
+ * - Payment: ID, request and status snapshot.
+ * - PaymentService: owns payment records and idempotency/event indexes.
+ * - Gateway: charge/refund contract; FakeGateway simulates provider outcomes.
+ *
+ * Key operations and flow:
+ * - pay -> validate -> check key -> store PROCESSING -> retry the same gateway ID.
+ * - Definitive success/decline becomes SUCCESS/FAILED; exhaustion stays PROCESSING.
+ * - refund requires SUCCESS; trusted webhook reconciles a PROCESSING payment.
+ *
+ * Design choices and invariants:
+ * - Gateway interface isolates provider behavior from orchestration.
+ * - An uncertain response is not proof of failure; do not invent a new payment ID.
+ * - Full refund retries reuse the ID; late events cannot revert terminal states.
+ * - Webhook event identity is scoped by provider; validate payment/provider match.
+ *
+ * Assumptions and out of scope:
+ * - One assumed currency (INR), fake providers and in-memory records only.
+ * - Webhook authentication happens before this trusted method; no HTTP endpoint.
+ * - No partial refunds, persistent transactions, multi-process coordination,
+ * - real payment credentials, retry backoff or conflicting-final-event recovery.
+ *
+ * Interview discussion and checks:
+ * - Test concurrent duplicate keys, payload conflicts, lost responses and exhaustion.
+ * - Test decline, failed/refunded retries, stale events and snapshot independence.
+ * - Discuss durable unique constraints, provider idempotency and reconciliation.
+ *
+ * Concurrency in this edition:
+ * - Instance-level synchronization protects service/game mutations.
+ *
+ * Run / validation:
+ * - From repository root:
+ *   python3 scripts/run.py Java InterviewQuestions/PaymentServiceLLD
+ * - Prerequisites and focused checks: see README.md and the topic guide.
+ */
+
 package InterviewQuestions;
 
 import java.util.HashMap;

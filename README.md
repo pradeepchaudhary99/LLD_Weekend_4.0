@@ -194,3 +194,11 @@ go run scripts/format-go.go
 The Go helper expands short function bodies and declarations before applying
 standard Go formatting. `npm run sync:javascript` also runs Prettier so generated
 JavaScript stays readable. Run the validation commands above after changes.
+
+## Food-delivery interview lesson
+
+See [FOOD_DELIVERY.md](FOOD_DELIVERY.md) for the seven-language runnable food-delivery
+example, prerequisites, lifecycle, scope and concurrency checks. Every interview
+example now includes requirements, entities, design notes, scope and run instructions
+at the top of its source. Original unfinished Java classroom sketches are retained
+in `classroom-drafts/2026-10-11/` as `.java.txt` files.

@@ -1,3 +1,61 @@
+/*
+ * INTERVIEW DESIGN NOTES - Notification System
+ *
+ * Implementation status: runnable in-memory teaching example. Requirements
+ * below describe this edition; production extensions are explicitly excluded.
+ *
+ * Functional requirements:
+ * - Submit notifications asynchronously using EMAIL, SMS and PUSH adapters.
+ * - Render a named template with the literal {name} placeholder.
+ * - Fan out to configured recipient channels; empty preferences mean opt-out.
+ * - Schedule pending work by HIGH(0), NORMAL(1), LOW(2), then FIFO sequence.
+ * - Track aggregate QUEUED/SENT/FAILED/SKIPPED and per-channel attempts.
+ * - Deduplicate identical request IDs; retry each failed delivery up to three times.
+ *
+ * Non-functional requirements:
+ * - Separate submission from provider I/O and protect shared service state.
+ * - Keep successful channels from being retried when another channel fails.
+ * - Copy configuration and expose snapshots instead of mutable repository state.
+ * - Provide explicit start, idle wait and shutdown that drains accepted work.
+ *
+ * Core entities and responsibilities:
+ * - Request: ID, user, template, name and priority.
+ * - Delivery: one channel job with rendered message, status and attempt count.
+ * - NotificationService: owns templates/preferences, request index and queue.
+ * - NotificationChannel/FakeChannel: replaceable provider boundary and simulation.
+ * - Worker: consumes pending jobs and updates per-channel results.
+ *
+ * Key operations and flow:
+ * - submit -> validate request/preferences -> check ID -> render -> enqueue fan-out.
+ * - worker -> choose priority/FIFO job -> attempt delivery -> record result.
+ * - Aggregate status stays QUEUED while jobs remain; any final failure means FAILED.
+ *
+ * Design choices and invariants:
+ * - Registry-based adapters allow new channels without changing orchestration.
+ * - Idempotency is submission deduplication, not exactly-once external delivery.
+ * - Priority never preempts a call already running; retries use the same delivery ID.
+ * - No selected channels produces SKIPPED without contacting a provider.
+ *
+ * Assumptions and out of scope:
+ * - Templates/preferences are fixed for the service lifetime; providers are fake.
+ * - One service worker, no durable queue, backpressure, restart recovery or backoff.
+ * - Adapters must finish calls; owner code manages lifecycle, not provider callbacks.
+ * - Continuous high-priority arrivals can starve lower-priority work.
+ *
+ * Interview discussion and checks:
+ * - Test FIFO ties, opt-out, unknown templates, retry exhaustion and payload conflicts.
+ * - Test concurrent duplicate submissions, literal replacement text and close-before-start.
+ * - Discuss outbox delivery, provider idempotency, bounded queues and retry scheduling.
+ *
+ * Concurrency in this edition:
+ * - One service Thread; Monitor protects the priority queue and state.
+ *
+ * Run / validation:
+ * - From repository root:
+ *   python3 scripts/run.py 'C#' InterviewQuestions/NotificationSystemDemo
+ * - Prerequisites and focused checks: see README.md and the topic guide.
+ */
+
 using System;
 using System.Collections.Generic;
 using System.Linq;

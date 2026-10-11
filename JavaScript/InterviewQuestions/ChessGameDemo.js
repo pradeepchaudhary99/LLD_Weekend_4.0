@@ -1,3 +1,57 @@
+/*
+ * INTERVIEW DESIGN NOTES - Chess Game
+ *
+ * Implementation status: runnable in-memory teaching example. Requirements
+ * below describe this edition; production extensions are explicitly excluded.
+ *
+ * Functional requirements:
+ * - Support two alternating players on a standard 8 x 8 board.
+ * - Validate ordinary moves for king, queen, rook, bishop, knight and pawn.
+ * - Support captures, initial pawn double moves and check detection.
+ * - Reject moves exposing the moving side's king; detect checkmate and stalemate.
+ * - Report ACTIVE, CHECKMATE, STALEMATE and bare-kings DRAW.
+ *
+ * Non-functional requirements:
+ * - Keep board changes atomic within a game instance.
+ * - Separate movement geometry, attack detection and turn/state management.
+ * - Make rejected moves leave the board unchanged; keep scenarios reproducible.
+ *
+ * Core entities and responsibilities:
+ * - ChessGame: owns current side, lifecycle status and move commands.
+ * - Board: owns squares, paths, attack detection and legal-reply search.
+ * - Piece/color: encoded as upper/lowercase symbols; a dot means empty.
+ * - Position: a board index converted from algebraic squares such as e2.
+ *
+ * Key operations and flow:
+ * - move(from, to): validate ownership and geometry, simulate, check king safety,
+ * - restore the simulation, commit a legal move, switch side and classify replies.
+ * - Checkmate requires no legal reply from ANY piece, not just no king move.
+ *
+ * Design choices and invariants:
+ * - Composition separates game orchestration from board rules.
+ * - Piece rules use localized dispatch rather than one subclass per piece.
+ * - Pawn attacks differ from pawn advances; kings are never captured.
+ * - Custom boards require 64 squares and exactly one king of each color.
+ *
+ * Assumptions and out of scope:
+ * - No castling, en passant, promotion, clocks or move history.
+ * - Moves requiring promotion are rejected; no repetition/fifty-move draw rules.
+ * - Custom setups assume an otherwise legal position; this is not a full FIDE engine.
+ *
+ * Interview discussion and checks:
+ * - Test pins, blocked paths, check evasion, pawn attacks and rejected-move stability.
+ * - Discuss replacing piece dispatch with strategies and adding historical state.
+ * - The fixed 64-square search favors clarity over chess-engine optimizations.
+ *
+ * Concurrency in this edition:
+ * - Synchronous operations on one event loop; no cross-worker safety.
+ *
+ * Run / validation:
+ * - From repository root:
+ *   python3 scripts/run.py JavaScript InterviewQuestions/ChessGameDemo
+ * - Prerequisites and focused checks: see README.md and the topic guide.
+ */
+
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ChessGame = exports.Board = void 0;
