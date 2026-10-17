@@ -1,0 +1,64 @@
+package InterviewQuestions;
+
+/*
+Functional Requirements:
+    Allow/Reject a request based on rate-limit rules 
+        User 
+        IP 
+        API Endpoint 
+    Support multiple types of algorithm:
+        TokenBucket  
+        SlidingWindow 
+    
+Non-Functional Requirments: 
+    Thread-safe 
+    Low latency 
+    Extensible 
+
+
+
+*/
+
+
+interface RateLimitingStrategy{
+    boolean isAllowed(Request request);
+}
+
+class TokenBucket{
+    int capacity;
+    int tokens;
+    Long lastRefillTime;
+    int refillRate;
+
+    void refill(){
+        Long currentTime = Time.currentTime;
+        Long diff = lastRefillTime - currentTime;
+        tokens = Math.min(capacity, diff * refillRate);
+    }
+
+    synchronized boolean isAllowed(){
+        refill();
+
+        if(tokens > 0){
+            tokens--;
+            return true;
+        }else{
+            return false;
+        }
+    }
+}
+
+
+class TokenBucketStrategy{
+    Map<String, TokenBucket> tokenBucketRepository;
+    
+}
+
+class RateLimiter{
+
+}
+
+
+public class RateLimitingDemo {
+    
+}

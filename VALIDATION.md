@@ -208,3 +208,21 @@ concurrency models and teaching-simulation limits. No build artifacts are commit
 - .NET was invoked using the `DOTNET` environment override for the available .NET 8
   SDK. An initial focused-suite invocation omitted that override and could not locate
   `dotnet`; rerunning with the configured SDK passed. No toolchain checks remain skipped.
+
+## 2026-10-17: load balancer and rate limiter
+
+- Completed both new Java classroom sketches and added Python, C++, Go, C#,
+  JavaScript and TypeScript equivalents (14 runnable source files).
+- All sources include requirements, entities, flow, invariants, scope and run commands.
+  Original sketches are retained verbatim under `classroom-drafts/2026-10-17/`.
+- `scripts/validate.py`: **210/210 passed** (30 lessons in seven languages).
+- `scripts/test_balancer_rate_limit.py`: **5 tests passed**, including concurrent
+  quotas/leases, frequent token checks, window boundaries, key capacity and membership.
+- `InterviewQuestions.BalancerRateChecks`: **passed** concurrent quota and reservation checks.
+- Go `go test -race` for both new lessons: **passed**, including concurrent checks
+  and frequent-refill boundary checks.
+- The prior temporary .NET SDK was unavailable; a temporary .NET 8.0.426 SDK was
+  installed and supplied through `DOTNET`. All seven language checks ran successfully.
+- Scope: simulated health reports, not network probe scheduling; local in-memory
+  quotas, not distributed limits. Details and reproducible commands are in
+  [BALANCING_AND_RATE_LIMITING.md](BALANCING_AND_RATE_LIMITING.md).

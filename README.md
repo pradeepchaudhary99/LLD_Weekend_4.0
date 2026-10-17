@@ -202,3 +202,10 @@ example, prerequisites, lifecycle, scope and concurrency checks. Every interview
 example now includes requirements, entities, design notes, scope and run instructions
 at the top of its source. Original unfinished Java classroom sketches are retained
 in `classroom-drafts/2026-10-11/` as `.java.txt` files.
+
+## Load balancing and rate limiting
+
+[Load balancing and rate limiting](BALANCING_AND_RATE_LIMITING.md) contains the
+seven-language runnable lessons, algorithm trade-offs, prerequisites, exact run
+commands and concurrency tests. Original Java classroom sketches are preserved
+in `classroom-drafts/2026-10-17/`.

@@ -11,6 +11,8 @@ import sys
 from run import ROOT, LANGUAGES
 
 EXPECTED = {
+    "InterviewQuestions/LoadBalancerDemo": "Round robin: A,B\nLeast connections: A\nHealthy fallback: B\nWeighted A:B: 4:2\nEdge cases: passed",
+    "InterviewQuestions/RateLimitingDemo": "Token bucket: allow,allow,deny,allow\nSliding window: allow,allow,deny,allow\nKey isolation and shared scopes: passed\nEdge cases: passed",
     "InterviewQuestions/Zomato_Food_Delivery": "Delivered: DELIVERED\nCancelled: CANCELLED\nRejected: REJECTED\nFailed payment: PAYMENT_FAILED\nEdge cases: passed",
     "InterviewQuestions/SplitWiseDemo": "Equal shares: 34,33,33\nB owes A: 13\nA owes C: 18\nAfter settlement: 0\nHistory entries: 4",
     "InterviewQuestions/NotificationSystemDemo": "Sent: high/EMAIL,high/SMS,low/EMAIL,low/SMS\nHigh: SENT\nSMS attempts: 2\nPush: FAILED\nOpt-out: SKIPPED",

@@ -1,0 +1,150 @@
+
+
+/*
+Load Balancer 
+
+Functional Requirments:
+- Register/remove backend servers
+- Route each incoming reques to one of the healthy servers 
+- Support multiple type of load balancing algorithms 
+        --> Round Robin
+        --> Random
+        --> Lead Connections 
+        --> Weighted round Robing 
+- Allow algorithms to be changed as per the needed 
+- Continously monitor the health of servers [Observer design]
+Non-Functional Requirments: 
+    Thread-safety
+    Fast server selection : Optimization algorithm 
+    Extensible design 
+    SOLID principle should be followed 
+
+
+
+Core Entities:
+    Interface : LoadBalancingStrategy 
+    Server 
+    ServerStatus 
+    LoadBalancer : Facade Layer 
+    HealthService
+    Request 
+
+*/
+
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+
+interface LoadBalancingStrategy{
+    Server AssignServer(List<Server> servers, Request request);
+}
+
+
+
+
+
+class RoundRobinStrategy implements  LoadBalancingStrategy{
+    AtomicInteger counter = new AtomicInteger(0); //Thread Safe counter 
+    @Override
+    public Server AssignServer(List<Server> servers, Request request) {
+        int index = counter.getAndIncrement() % servers.size(); //
+        return servers.get(index); 
+    }
+}
+
+class LeastConnectionStrategy implements  LoadBalancingStrategy{
+
+    @Override
+    public Server AssignServer(List<Server> servers, Request request) {
+        int leastConnection = Integer.MAX_VALUE;
+        Server ans_server = null;
+        for(Server server : servers){
+            if(leastConnection > servers.active_connections){
+                leastConnection = servers.active_connections;
+                ans_server = server;
+            }
+        }
+        return ans_server;
+    }
+    
+}
+
+class WeightedRoundRobin implements LoadBalancingStrategy{
+    List<Server> servers;
+    
+    
+}
+
+
+
+class Server{
+    String id;
+    String hostIP;
+    int port;
+    ServerStatus status;
+    int weight;
+    int active_connections;
+
+
+    List<Observer> observers;
+
+    void monitorHealth(){
+
+        ///something changes
+        /// 
+        notifyObserver(new_status);
+    }
+
+    void notifyObserver(){
+        if(this.status != new_status){
+
+        }
+    }
+} 
+
+
+enum ServerStatus{
+    HEALTHY,
+    UNHEALTHY
+}
+
+class LoadBalancer{
+
+    HealthService service;
+    LoadBalancingStrategy strategy;
+
+    Server routeRequest(Request request){
+
+        Server server = strategy.AssignServer(service.getServers(), request);
+        
+        return server;
+    }
+    void handleRequest(Request request){
+
+        Server server = strategy.AssignServer(service.getServers(), request);
+        server.assignRequest(request);
+    }
+
+    void setStrategy(LoadBalancingStrategy strategy){
+        this.strategy = strategy;
+    }
+    
+}
+
+class HealthService implements Observer{
+    List<Server> servers;
+
+    void addServers(Server server){
+    
+    }
+    void removeServer(Server server){
+
+    } 
+
+    List<Server> getServers(){
+        return servers;
+    }
+
+    void notifyHealthStatus(Server server){
+
+    }
+}
