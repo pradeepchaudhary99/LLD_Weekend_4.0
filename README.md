@@ -209,3 +209,10 @@ in `classroom-drafts/2026-10-11/` as `.java.txt` files.
 seven-language runnable lessons, algorithm trade-offs, prerequisites, exact run
 commands and concurrency tests. Original Java classroom sketches are preserved
 in `classroom-drafts/2026-10-17/`.
+
+## LRU cache and queued leaky bucket
+
+[LRU cache and leaky bucket](CACHE_AND_LEAKY_BUCKET.md) explains the two runnable
+seven-language lessons, requirements, data structures, worker lifecycle, run commands
+and focused validation. Original Java sketches are archived in
+`classroom-drafts/2026-10-18/`.

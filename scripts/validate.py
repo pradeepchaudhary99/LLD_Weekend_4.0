@@ -11,6 +11,8 @@ import sys
 from run import ROOT, LANGUAGES
 
 EXPECTED = {
+    "InterviewQuestions/LRU_CacheDemo": "Evicted key 2: true\nStored negative value: -1\nMRU order: 1,3\nEdge cases: passed",
+    "InterviewQuestions/LeakyBucketPseduo": "Overflow rejected: true\nFIFO attempts: 1,2\nHandler failures: 1\nShutdown drained: true",
     "InterviewQuestions/LoadBalancerDemo": "Round robin: A,B\nLeast connections: A\nHealthy fallback: B\nWeighted A:B: 4:2\nEdge cases: passed",
     "InterviewQuestions/RateLimitingDemo": "Token bucket: allow,allow,deny,allow\nSliding window: allow,allow,deny,allow\nKey isolation and shared scopes: passed\nEdge cases: passed",
     "InterviewQuestions/Zomato_Food_Delivery": "Delivered: DELIVERED\nCancelled: CANCELLED\nRejected: REJECTED\nFailed payment: PAYMENT_FAILED\nEdge cases: passed",

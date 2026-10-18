@@ -1,0 +1,37 @@
+package InterviewQuestions;
+
+
+class LeakyBucket:
+    QUEUE 
+    CAPACITY 
+    LEAKRATE // 2 REQUEST / SECOND  
+    leakInterval 
+
+    ADDREQUEST(request):
+
+        if queue.size() == 0:
+            queue.add(offer)
+            notify();
+    
+        if queue.size() >= capacity: 
+            return "REJECTED";
+        
+        queue.offer(request)
+        
+        return "ACCEPTED"
+
+    leak():
+
+      while(true):
+        work = queue.peek() 
+        processTheWork(work)
+        sleep(leakInterval)
+            
+            //remove the request 
+        request = queue.pop()
+        
+
+
+public class LeakyBucketPseduo {
+    
+}

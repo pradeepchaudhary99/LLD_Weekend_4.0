@@ -1,0 +1,91 @@
+package InterviewQuestions;
+
+import java.util.Map;
+
+class LRUCache{
+
+    class Node{
+        int key;
+        int value;
+        Node prev;
+        Node next;
+
+        Node(int key, int value){
+            this.key = key;
+            this.value = value;
+        }
+    }
+
+    int capacity;
+    Map<Integer, Node> cache;
+
+    // Maintain the ordering   
+    Node head; //  Most recently used 
+    Node tail; // Least Recently used   
+
+    public LRUCache(int capacit){
+        this.head = new Node(0,0); //dummy nodes 
+        this.tail = new Node(0,0); // dummy nodes 
+
+        head.next = tail;
+        tail.prev = head; 
+
+    }
+
+    public int get(int key){
+        if(!cache.containsKey(key)){
+            return -1;
+        }
+        
+        Node node = cache.get(key);
+        //Move recenlty accessed node to front 
+        remove(node);
+        addToFront(node); 
+        return node.value;
+    }
+
+    public void put(int key, int value){
+        //key is already exists
+        if(cache.containsKey(key)){
+            Node node = cache.get(key);
+            node.value = value; 
+        //Move recenlty accessed node to front 
+            remove(node);
+            addToFront(node); 
+            return;
+        }
+
+        //Cache Full 
+        if(cache.size () == capacity){
+            cache.remove(tail.prev.key);
+            remove(tail.prev);
+        }
+
+        Node newNode = new Node(key, value);
+        addToFront(newNode);
+        cache.put(key, newNode);
+    }
+
+    private void addToFront(Node node){
+        // HEAD ----> TAIL 
+        node.next = head.next;
+        head.next = node;
+        tail.prev = node;
+        node.prev = head;
+    }
+    // HEAD -->  Node ---> Tail 
+    //      <--       <--
+
+    private void remove(Node node){
+        node.prev.next = node.prev; 
+
+    }
+}
+
+
+
+
+
+public class LRU_CacheDemo {
+    
+}

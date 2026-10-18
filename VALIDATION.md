@@ -226,3 +226,21 @@ concurrency models and teaching-simulation limits. No build artifacts are commit
 - Scope: simulated health reports, not network probe scheduling; local in-memory
   quotas, not distributed limits. Details and reproducible commands are in
   [BALANCING_AND_RATE_LIMITING.md](BALANCING_AND_RATE_LIMITING.md).
+
+## 2026-10-18: LRU cache and queued leaky bucket
+
+- Completed both Java sketches and six translations per lesson (14 runnable sources).
+  Preserved the originals verbatim in `classroom-drafts/2026-10-18/`.
+- Added requirements, entities, flow, invariants, scope and exact run commands to
+  every source. See [CACHE_AND_LEAKY_BUCKET.md](CACHE_AND_LEAKY_BUCKET.md).
+- `scripts/validate.py`: **224/224 passed** (32 lessons in seven languages).
+- Python focused suite: **4 tests passed**, including a randomized LRU reference
+  model, concurrent cache operations, queue admission, idle wakeup, failure continuation,
+  cadence and drain-before-start.
+- Java focused suite: **passed** cache/queue concurrency, wakeup, failure and cadence.
+- Go race-detector suites for both lessons: **passed** (three focused tests).
+- C++, C# and Node focused suites: **passed** cache/queue lifecycle and cadence checks.
+- The two C++ demos were rerun after adding explicit successful return values for
+  inclusion in the native test harness; both passed. No toolchain checks were skipped.
+- Scope: count-based in-memory cache; bounded non-durable FIFO shaper. Handler callbacks
+  must finish and must not close their own bucket; no forced shutdown timeout is promised.
