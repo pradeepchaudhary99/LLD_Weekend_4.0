@@ -1,0 +1,181 @@
+package InterviewQuestions;
+
+import java.util.PriorityQueue;
+import java.util.concurrent.PriorityBlockingQueue;
+
+/*
+Requirements:
+    Schedule a task  : Task 
+    execute a task at a given time  : Time
+    support different priorities of task  : HIGH | LOW | MEDIUM
+    support different types of task: Recurring Task, One-Time
+    Cancel a Task 
+    Run multiple tasks concurrently : using a ThreadPool
+
+Non-Functional:
+    Extensible 
+    thread-safe 
+    Priority of task should be supported 
+    SOLID principles 
+
+Core Entities:
+    Task 
+    TaskSchedular 
+    WorkerPool 
+        -- PriorityQueue<ScheduledTask>
+        Schedular Thead / Workers 
+            --> Pick the task from the priority queue and run it 
+
+     Task.execute();   
+
+*/
+
+
+enum TaskPriority{
+    LOW, HIGH, MEDIUM 
+}
+
+enum TaskType{
+    RECURRING, ONE_TIME
+}
+
+abstract class  Task{
+
+    abstract void execute();
+}
+
+class EmailTask extends Task {
+
+    public void execute() {
+
+    }
+}
+
+class CleanUpTask extends Task{
+
+    @Override
+    public void execute() {
+    }
+    
+}
+class SubhamTask extends Task{
+
+    @Override
+    void execute() {
+    }
+
+}
+
+class ScheduledTask implements Comparable<ScheduledTask>{
+
+    String id;
+    Task task;
+    long executionTime; // 10:00 AM Today, 13123231 + 24hr
+    boolean isRecurring;
+    long interval; // Day : 24 hr , Weekly: 24*7, 
+    TaskPriority priority;
+    @Override
+    public int compareTo(ScheduledTask other) {
+        int result = Long.compare(this.executionTime, other.executionTime);
+        if(result != 0){
+            return result;
+        }else{
+                // compare the priority and return based on that.
+                return 23132;
+        }
+    }
+
+}
+
+class TaskSchedular{
+
+    PriorityQueue<ScheduledTask> queue = new PriorityQueue<>();
+    void schedule(ScheduledTask task){
+        queue.offer(task);
+        notifyAll();
+    }
+    void cancelTask(){
+        //
+    }
+
+    ScheduledTask getNextCandidate(){
+        if(queue.isEmpty()){
+            return null;
+        }else{
+            return queue.peek();
+        }
+    }
+
+    ScheduledTask getTask(){
+        if(queue.isEmpty()){
+            return null;
+        }else{
+            return queue.poll();
+        }
+    }
+}
+
+class TaskSchedularThreadPool{
+    List<DispatherWorker> workers;
+    List<Thread> worker_threads;
+    
+}
+
+
+// Dispatcher --> 
+class DispatherWorker implements Runnable{
+    TaskSchedular taskSchedular;
+    public void run(){
+        while (true) {
+
+            ScheduledTask scheduledTask;
+    
+            synchronized (this) {
+    
+                while (queue.isEmpty()) {
+    
+                    try {
+                        wait();
+                    } catch (InterruptedException e) {
+                        return;
+                    }
+                }
+    
+                scheduledTask = queue.peek();
+    
+                long currentTime =
+                        System.currentTimeMillis();
+    
+                long waitTime =
+                        scheduledTask.executionTime
+                        - currentTime;
+    
+                if (waitTime > 0) {
+    
+                    try {
+                        wait(waitTime); // 
+                    } catch (InterruptedException e) {
+                        return;
+                    }
+    
+                    continue;
+                }
+    
+                scheduledTask =  queue.poll();
+            }
+    
+            if (scheduledTask.recurring) {
+    
+                scheduledTask.executionTime =
+                        System.currentTimeMillis()
+                        + scheduledTask.interval;
+    
+                taskSchedular.schedule(scheduledTask);
+            }
+        }
+    }
+}
+
+public class TaskSchedular_demo {
+    
+}

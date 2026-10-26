@@ -83,6 +83,7 @@ def run(language, lesson):
             else:
                 project = ROOT / "C#" / "LLDWeekend4.csproj"
                 entrypoints = {
+                    "InterviewQuestions/TaskSchedular_demo": "InterviewQuestions.TaskSchedular_demo",
                     "InterviewQuestions/LRU_CacheDemo": "InterviewQuestions.LRU_CacheDemo",
                     "InterviewQuestions/LeakyBucketPseduo": "InterviewQuestions.LeakyBucketPseduo",
                     "InterviewQuestions/LoadBalancerDemo": "InterviewQuestions.LoadBalancerDemo",

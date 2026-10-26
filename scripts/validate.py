@@ -11,6 +11,7 @@ import sys
 from run import ROOT, LANGUAGES
 
 EXPECTED = {
+    "InterviewQuestions/TaskSchedular_demo": "Priority: high,low\nCancelled before dispatch: true\nFailure isolated: true\nRecurring stopped: true\nShutdown: closed",
     "InterviewQuestions/LRU_CacheDemo": "Evicted key 2: true\nStored negative value: -1\nMRU order: 1,3\nEdge cases: passed",
     "InterviewQuestions/LeakyBucketPseduo": "Overflow rejected: true\nFIFO attempts: 1,2\nHandler failures: 1\nShutdown drained: true",
     "InterviewQuestions/LoadBalancerDemo": "Round robin: A,B\nLeast connections: A\nHealthy fallback: B\nWeighted A:B: 4:2\nEdge cases: passed",

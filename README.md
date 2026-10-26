@@ -216,3 +216,8 @@ in `classroom-drafts/2026-10-17/`.
 seven-language lessons, requirements, data structures, worker lifecycle, run commands
 and focused validation. Original Java sketches are archived in
 `classroom-drafts/2026-10-18/`.
+
+## Task scheduler lesson (October 26)
+
+See [Task scheduler guide](TASK_SCHEDULER_GUIDE.md) for seven runnable versions,
+requirements, concurrency contracts, prerequisites and exact commands.

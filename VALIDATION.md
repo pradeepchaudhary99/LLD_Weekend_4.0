@@ -244,3 +244,18 @@ concurrency models and teaching-simulation limits. No build artifacts are commit
   inclusion in the native test harness; both passed. No toolchain checks were skipped.
 - Scope: count-based in-memory cache; bounded non-durable FIFO shaper. Handler callbacks
   must finish and must not close their own bucket; no forced shutdown timeout is promised.
+
+## October 26, 2026 — task scheduler
+
+- Full regression suite: **231/231 passed** (33 lessons × seven languages).
+- New scheduler demos passed in Java, Python, C++, Go, C#, JavaScript and TypeScript.
+- Java barrier/deadline checks and JavaScript async-worker/deadline checks passed.
+- Four focused Python concurrency/lifecycle checks passed.
+- Go concurrency checks passed with the race detector.
+- Full TypeScript project compilation passed.
+- .NET 8 SDK was installed temporarily under `/tmp/lld-dotnet-oct26` for validation;
+  no SDK binaries or dependencies are committed. No toolchain checks were skipped.
+
+See TASK_SCHEDULER_GUIDE.md for reproducible commands, supported behavior and
+limitations. The original unfinished classroom source is archived verbatim.
+The Simple Java editions were intentionally left unchanged and untranslated.
