@@ -84,6 +84,8 @@ def run(language, lesson):
                 project = ROOT / "C#" / "LLDWeekend4.csproj"
                 entrypoints = {
                     "InterviewQuestions/TaskSchedular_demo": "InterviewQuestions.TaskSchedular_demo",
+                    "InterviewQuestions/AmazonLockerDemo": "InterviewQuestions.AmazonLockerDemo",
+                    "InterviewQuestions/KafkaLLDDemo": "InterviewQuestions.KafkaLLDDemo",
                     "InterviewQuestions/LRU_CacheDemo": "InterviewQuestions.LRU_CacheDemo",
                     "InterviewQuestions/LeakyBucketPseduo": "InterviewQuestions.LeakyBucketPseduo",
                     "InterviewQuestions/LoadBalancerDemo": "InterviewQuestions.LoadBalancerDemo",

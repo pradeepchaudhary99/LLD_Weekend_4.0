@@ -221,3 +221,8 @@ and focused validation. Original Java sketches are archived in
 
 See [Task scheduler guide](TASK_SCHEDULER_GUIDE.md) for seven runnable versions,
 requirements, concurrency contracts, prerequisites and exact commands.
+
+## Amazon Locker and Kafka LLD (October 31)
+
+See [Locker and Kafka guide](LOCKER_KAFKA_GUIDE.md) for seven-language versions,
+requirements, concurrency and lifecycle trade-offs, and exact run commands.

@@ -1,0 +1,226 @@
+package InterviewQuestions;
+
+/*
+Functional Requirements
+- Customer places an order and selects a locker location.
+- Amazon Locker Should support multiple Locker Type and package size  
+- Amazon Locker Triggers notifications to the users
+- System assigns a suitable locker based on package size.
+- Delivery agent deposits package into locker.
+- Customer gets an OTP / pickup code.
+- Customer enters code and collects package.
+- Locker becomes available again.
+- Pickup code expires after a configured duration.
+
+
+Core Entitites:
+    Customer 
+    AmazonLocker 
+    Locker 
+        id 
+        size 
+        isFree()
+    
+
+
+
+
+Delivery Agent
+    ↓
+scan package
+    ↓
+LockerService.assignLocker()
+    ↓
+find smallest suitable locker
+    ↓
+store package
+    ↓
+generate pickup code
+    ↓
+notify customer
+
+
+
+Customer
+   ↓
+Enter OTP / Pickup Code
+   ↓
+LockerService
+   ↓
+Validate code + expiry
+   ↓
+Open Locker
+   ↓
+Customer takes package
+   ↓
+Locker becomes AVAILABLE
+
+
+*/
+
+enum LockerSize {
+    SMALL, MEDIUM, LARGE
+}
+
+enum LockerStatus {
+    AVAILABLE, OCCUPIED, OUT_OF_SERVICE
+}
+
+enum PackageStatus {
+    CREATED, STORED, PICKED_UP, EXPIRED
+}
+
+class Package {
+    String packageId;
+    String orderId;
+    LockerSize size;
+    PackageStatus status;
+}
+
+class Locker {
+    String lockerId;
+    LockerSize size;
+    LockerStatus status;
+    Package currentPackage;
+
+    boolean isOccupied(){
+        return currentPackage != null;
+    }
+    
+    boolean canFit(Package pkg) {
+        return status == LockerStatus.AVAILABLE
+            && size.ordinal() >= pkg.size.ordinal();
+    }
+
+    void store(Package pkg) {
+        currentPackage = pkg;
+        status = LockerStatus.OCCUPIED;
+    }
+
+    void release() {
+        currentPackage = null;
+        status = LockerStatus.AVAILABLE;
+    }
+}
+
+class LockerLocation {
+    String locationId;
+    String address;
+    List<Locker> lockers;
+
+    Locker findAvailableLocker(Package pkg) {
+        for (Locker locker : lockers) {
+            if (locker.canFit(pkg)) {
+                return locker;
+            }
+        }
+
+        throw new RuntimeException("No locker available");
+    }
+}
+
+class PickupCode {
+    String code;
+    String packageId;
+    long expiryTime;
+
+    boolean isValid(String enteredCode) {
+        return code.equals(enteredCode)
+            && System.currentTimeMillis() < expiryTime;
+    }
+}
+
+class LockerAssignment {
+    String packageId;
+    String lockerId;
+    String locationId;
+    PickupCode pickupCode;
+}
+
+class AmazonLockerService {
+
+    Map<String, LockerLocation> locations;
+    Map<String, LockerAssignment> assignments;
+
+    LockerAssignment assignLocker(
+        String locationId,
+        Package pkg
+    ) {
+
+        LockerLocation location =
+            locations.get(locationId);
+
+        Locker locker =
+            location.findAvailableLocker(pkg);
+
+        locker.store(pkg);
+
+        PickupCode code =
+            generatePickupCode(pkg.packageId);
+
+        LockerAssignment assignment =
+            new LockerAssignment(
+                pkg.packageId,
+                locker.lockerId,
+                code
+            );
+
+        assignments.put(pkg.packageId, assignment);
+
+        pkg.status = PackageStatus.STORED;
+
+        return assignment;
+    }
+}
+
+boolean pickupPackage(
+    String packageId,
+    String enteredCode
+) {
+
+    LockerAssignment assignment =
+        assignments.get(packageId);
+
+    if (assignment == null)
+        return false;
+
+    if (!assignment.pickupCode.isValid(enteredCode))
+        return false;
+
+    Locker locker =
+        findLocker(assignment.lockerId);
+
+    locker.release();
+
+    Package pkg = findPackage(packageId);
+    pkg.status = PackageStatus.PICKED_UP;
+
+    assignments.remove(packageId);
+
+    return true;
+}
+
+
+interface LockerAllocationStrategy {
+    Locker selectLocker(
+        List<Locker> lockers,
+        Package pkg
+    );
+}
+
+class BestFitStrategy
+        implements LockerAllocationStrategy {
+
+    Locker selectLocker(
+        List<Locker> lockers,
+        Package pkg
+    ) {
+        // choose smallest available locker
+        // that can fit the package
+    }
+}
+
+
+public class AmazonLockerDemo {
+    
+}

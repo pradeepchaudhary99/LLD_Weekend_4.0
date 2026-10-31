@@ -259,3 +259,19 @@ concurrency models and teaching-simulation limits. No build artifacts are commit
 See TASK_SCHEDULER_GUIDE.md for reproducible commands, supported behavior and
 limitations. The original unfinished classroom source is archived verbatim.
 The Simple Java editions were intentionally left unchanged and untranslated.
+
+## October 31, 2026 — Amazon Locker and Kafka LLD
+
+- Full regression suite: **245/245 passed** (35 lessons × seven languages).
+- Both new demos compiled and ran in Java, Python, C++, Go, C#, JavaScript and TypeScript.
+- Six focused Python checks passed, including capacity contention, single pickup,
+  exact expiry, invalid input, concurrent appends, rebalance and group-key isolation.
+- Java concurrent allocation/pickup and 500-append checks passed.
+- Three Go tests passed with the race detector.
+- Full TypeScript project compilation passed; new C# builds had zero warnings/errors.
+- A temporary .NET 8 SDK under `/tmp/lld-dotnet-oct31` was used for validation.
+  No toolchains were skipped; no SDKs or dependency directories are committed.
+
+See LOCKER_KAFKA_GUIDE.md for reproducible commands, semantics and explicit
+limitations. Source drafts are preserved verbatim under classroom-drafts/2026-10-31.
+Simple Java editions remain unchanged and untranslated.

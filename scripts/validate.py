@@ -11,6 +11,8 @@ import sys
 from run import ROOT, LANGUAGES
 
 EXPECTED = {
+    "InterviewQuestions/AmazonLockerDemo": "Best fit: 1\nPickup once: true\nExpired locker retained: true\nReturned locker reused: true\nNotifications: 4",
+    "InterviewQuestions/KafkaLLDDemo": "Key ordering: 0,1\nUncommitted replay: true\nStale generation rejected: true\nPartition owners: c1,c2\nIndependent group replay: true",
     "InterviewQuestions/TaskSchedular_demo": "Priority: high,low\nCancelled before dispatch: true\nFailure isolated: true\nRecurring stopped: true\nShutdown: closed",
     "InterviewQuestions/LRU_CacheDemo": "Evicted key 2: true\nStored negative value: -1\nMRU order: 1,3\nEdge cases: passed",
     "InterviewQuestions/LeakyBucketPseduo": "Overflow rejected: true\nFIFO attempts: 1,2\nHandler failures: 1\nShutdown drained: true",

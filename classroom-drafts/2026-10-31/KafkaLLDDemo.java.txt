@@ -1,0 +1,256 @@
+package InterviewQuestions;
+
+/*
+
+
+KafkaBroker
+ ├── Map<String, Topic> topics
+ ├── createTopic()
+ ├── publish()
+ └── subscribe()
+
+Topic
+ ├── String name
+ ├── List<Partition> partitions
+ └── PartitionStrategy strategy
+
+Partition
+ ├── int id
+ ├── List<Message> messages
+ ├── AtomicLong nextOffset
+ ├── append()
+ └── readFrom(offset)
+
+Message
+ ├── String key
+ ├── String value
+ ├── long timestamp
+ └── long offset
+
+Producer
+ ├── KafkaBroker broker
+ └── send(topic, key, value)
+
+Consumer
+ ├── String consumerId
+ ├── String groupId
+ └── poll()
+
+ConsumerGroup
+List<Topic> subscribed;
+ ├── String groupId
+ ├── List<Consumer> consumers
+ ├── Map<PartitionID, ConsumerID> assignments
+ └── rebalance()
+
+OffsetManager
+ ├── Map<GroupPartitionKey, Long> offsets
+ ├── commitOffset()
+ └── getOffset()
+
+PartitionStrategy
+ └── selectPartition()
+
+HashPartitionStrategy
+RoundRobinPartitionStrategy
+
+
+
+Producer
+   ↓
+KafkaBroker
+   ↓
+Topic
+   ↓
+PartitionStrategy
+   ↓
+Partition
+   ↓
+append(Message)
+
+
+Consumer Group
+     ↓
+Partition Assignment
+     ↓
+Consumer.poll()
+     ↓
+Partition.readFrom(offset)
+     ↓
+OffsetManager.commitOffset()
+
+
+
+Producer.send()
+      ↓
+Broker.publish()
+      ↓
+Topic.getPartition()
+      ↓
+Partition.append()
+
+
+Consumer.poll()
+      ↓
+OffsetManager.getOffset()
+      ↓
+Partition.readFrom()
+      ↓
+process()
+      ↓
+OffsetManager.commit()
+
+
+*/
+
+class Message {
+    String key;
+    String value;
+    long offset;
+    long timestamp;
+}
+
+class Partition {
+    int id;
+    List<Message> messages = new ArrayList<>();
+    AtomicLong nextOffset = new AtomicLong(0);
+
+    synchronized long append(String key, String value) {
+        long offset = nextOffset.getAndIncrement();
+
+        Message msg = new Message(key, value, offset, now());
+        messages.add(msg);
+
+        return offset;
+    }
+
+    List<Message> readFrom(long offset, int limit) {
+        return messages
+            .stream()
+            .filter(m -> m.offset >= offset)
+            .limit(limit)
+            .toList();
+    }
+}
+
+class Topic {
+    String name;
+    List<Partition> partitions;
+
+    Partition getPartition(String key) {
+        int index = abs(hash(key)) % partitions.size();
+        return partitions.get(index);
+    }
+}
+
+
+class KafkaBroker {
+    Map<String, Topic> topics;
+
+    void createTopic(String name, int partitionCount) {
+        topics.put(name, new Topic(name, partitionCount));
+    }
+
+    long publish(String topicName, String key, String value) {
+        Topic topic = topics.get(topicName);
+
+        Partition partition = topic.getPartition(key);
+
+        return partition.append(key, value);
+    }
+}
+
+class Producer {
+    KafkaBroker broker;
+
+    void send(String topic, String key, String value) {
+        broker.publish(topic, key, value);
+    }
+}
+
+class OffsetManager {
+    Map<String, Long> offsets;
+
+    long getOffset(String groupId, String topic, int partitionId) {
+        String key = groupId + ":" + topic + ":" + partitionId;
+
+        return offsets.getOrDefault(key, 0L);
+    }
+
+    void commit(
+        String groupId,
+        String topic,
+        int partitionId,
+        long offset
+    ) {
+        String key = groupId + ":" + topic + ":" + partitionId;
+
+        offsets.put(key, offset);
+    }
+}
+
+class Consumer {
+    String consumerId;
+    String groupId;
+
+    KafkaBroker broker;
+    OffsetManager offsetManager;
+
+    List<Partition> assignedPartitions;
+
+    void poll(String topicName) {
+
+        for (Partition partition : assignedPartitions) {
+
+            long offset =
+                offsetManager.getOffset(
+                    groupId,
+                    topicName,
+                    partition.id
+                );
+
+            List<Message> messages =
+                partition.readFrom(offset, 10);
+
+            for (Message message : messages) {
+
+                process(message);
+
+                offsetManager.commit(
+                    groupId,
+                    topicName,
+                    partition.id,
+                    message.offset + 1
+                );
+            }
+        }
+    }
+}
+
+class ConsumerGroup {
+    String groupId;
+
+    List<Consumer> consumers;
+    List<Partition> partitions;
+
+    void rebalance() {
+
+        for (Consumer consumer : consumers) {
+            consumer.assignedPartitions.clear();
+        }
+
+        for (int i = 0; i < partitions.size(); i++) {
+
+            Consumer consumer =
+                consumers.get(i % consumers.size());
+
+            consumer.assignedPartitions.add(
+                partitions.get(i)
+            );
+        }
+    }
+}
+
+public class KafkaLLDDemo {
+    
+}
