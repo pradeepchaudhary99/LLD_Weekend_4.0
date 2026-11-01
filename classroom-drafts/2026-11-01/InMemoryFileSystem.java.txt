@@ -1,0 +1,119 @@
+
+
+/* Functional Requirments 
+
+    create file/folder 
+    read & update file content 
+    delete file/folder 
+    rename file/folder 
+    move file/folder 
+    List contents of a folder 
+    Search by name 
+    support nested directories 
+    get full path of any file/folder 
+
+Non-functional Requirements: 
+    Thead-safe operations 
+    fast directory lookup
+    prevent duplicate names insted same directory? 
+    Easy to add permissions
+
+FileSystem 
+    pwd: present working directory 
+    mkdir 
+    cd: reference of directory  
+    rename 
+    find
+    root 
+
+FileSystemNode 
+File 
+Directory 
+    Map<Id, FileSystemNode>
+
+// parent of root is null is the asumption 
+
+*/
+
+import java.util.Map;
+
+abstract class FileSystemNode{
+    String name;
+    Directory parent;
+    long createdAt;
+    long updatedAt;
+
+    abstract boolean isDirectory();
+    abstract int size();
+
+    // get the complete path of this entitity 
+    String getPath() {
+        // /a/b/c
+        // abc.mp4 + / + bollywood + / + movies + "/"
+        Directory currentDirectory = parent;
+        String path = "/" + name;
+        while(currentDirectory != null){
+            path = "/" + currentDirectory.getName() + path;
+            currentDirectory = currentDirectory.parent;
+        }
+    }
+}
+
+
+class FileSystem{
+    Directory root;
+    Directory pwd;
+    //complete path please
+    void createDirectory(String path){
+        // "/SystemDesign/pradeep/lld/hld"
+
+        // Path validator 
+        // SystemDesign/lld;
+        if(!pathValidator(path)){
+            System.out.println("Invalid path");
+            return;
+        }
+
+        String [] pathName = path.split("/");
+
+        Directory temp = root;
+
+        while(i < pathName.length){
+            String currentChild = pathName[i];
+            i++;
+            if(temp.childExist(currentChild)){
+                continue;
+            }else{
+                
+                FileSystemNode node = temp.addChild(currentChild);
+                if(node)
+            }
+        }
+
+
+
+    }
+
+    void createFile(){
+        
+    }
+}
+
+/**
+ * Directory
+ */
+class Directory implements FileSystemNode{
+
+    Map<String,FileSystemNode> childerens;
+
+    boolean childExist(String name){
+        return childerens.containsKey(name);
+    }
+
+
+}
+
+
+public class InMemoryFileSystem {
+    
+}

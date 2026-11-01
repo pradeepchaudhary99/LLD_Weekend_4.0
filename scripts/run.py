@@ -85,6 +85,7 @@ def run(language, lesson):
                 entrypoints = {
                     "InterviewQuestions/TaskSchedular_demo": "InterviewQuestions.TaskSchedular_demo",
                     "InterviewQuestions/AmazonLockerDemo": "InterviewQuestions.AmazonLockerDemo",
+                    "InterviewQuestions/InMemoryFileSystem": "InterviewQuestions.InMemoryFileSystem",
                     "InterviewQuestions/KafkaLLDDemo": "InterviewQuestions.KafkaLLDDemo",
                     "InterviewQuestions/LRU_CacheDemo": "InterviewQuestions.LRU_CacheDemo",
                     "InterviewQuestions/LeakyBucketPseduo": "InterviewQuestions.LeakyBucketPseduo",

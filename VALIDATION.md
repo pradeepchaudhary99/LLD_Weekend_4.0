@@ -275,3 +275,22 @@ The Simple Java editions were intentionally left unchanged and untranslated.
 See LOCKER_KAFKA_GUIDE.md for reproducible commands, semantics and explicit
 limitations. Source drafts are preserved verbatim under classroom-drafts/2026-10-31.
 Simple Java editions remain unchanged and untranslated.
+
+## November 1, 2026 — in-memory file system
+
+- Full regression suite: **252/252 passed** (36 lessons × seven languages).
+- New demo compiled and ran in Java, Python, C++, Go, C#, JavaScript and TypeScript.
+- Five Python tests passed for invalid paths, failed operations, snapshots, UTF-8
+  sizes, concurrent creates/appends and competing moves.
+- Java structural and concurrent create/append checks passed.
+- Two Go tests passed with the race detector.
+- JavaScript structural/edge checks passed.
+- C++ edge and concurrency checks passed with AddressSanitizer and
+  UndefinedBehaviorSanitizer enabled.
+- Full TypeScript project compilation passed; the new C# build had zero warnings/errors.
+- The temporary .NET 8 SDK under `/tmp/lld-dotnet-oct31` was used. No toolchain
+  checks were skipped, and no SDK or dependency directories are committed.
+
+See IN_MEMORY_FILESYSTEM_GUIDE.md for commands, operation contracts and limits.
+The classroom sketch is archived verbatim; existing FileSystem_Node and Simple
+Java editions are unchanged.

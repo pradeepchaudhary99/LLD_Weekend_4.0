@@ -226,3 +226,8 @@ requirements, concurrency contracts, prerequisites and exact commands.
 
 See [Locker and Kafka guide](LOCKER_KAFKA_GUIDE.md) for seven-language versions,
 requirements, concurrency and lifecycle trade-offs, and exact run commands.
+
+## In-memory file system (November 1)
+
+See [In-memory file-system guide](IN_MEMORY_FILESYSTEM_GUIDE.md) for seven runnable
+versions, operation contracts, concurrency explanations and exact run commands.
